@@ -8,14 +8,283 @@
 
         <style>
 
+            /* Dropdown Button */
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+        .ship-container {
+        display: flex;
+        justify-content: center;
+
+        }
+
+        .ship-button-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 10;
+        }
+
+        /* https://www.w3schools.com/howto/howto_css_dropdown.asp */
+
+
+        .ship-dropbtn {
+            padding: 0px 50px; 
+            cursor: pointer;
+        }
+
+        .ship-button {
+            padding: 0px 50px; 
+            cursor: pointer;
+        }
+
+        @keyframes bounce {
+        from {
+            translate: 0 2vh;
+            scale: 1 102%;
+        }
+
+        to {
+            translate: 0 0;
+            scale: 1 1;
+        }
+        }
+
+        .ship-character {
+            width: 400;
+            animation-name: bounce;
+            animation-duration: 1s;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;
+        }
+
+        /* https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/animate */
+
         </style>
     </head>
 
     <body>
         <h1>Fan Fiction</h1>
 
-        <svg id="ship-randomizer" height="600" width="1000" style="background: rgb(64, 64, 64); margin-top:5px; margin-left: 50px;" >
-        </svg>
+        <div id="ship-randomizer">
+            <div id="ship-container" class="ship-container" style="background: rgb(255, 255, 255);">
+                <svg id="ship-visualizer" height="400" width="1000" style="background: rgb(207, 207, 207);" >
+                    <text id="header" alignment-baseline="hanging" dx= "10" dy = "10">Build Your Own Ship</text>
+                    <text id="heart" alignment-baseline="hanging" text-anchor="middle" x= "500" dy = "100" font-weight=700 style="font-size: 30px; fill: #AA0033 ">&lt3</text>
+                </svg>
 
+            </div>
+            <div id="button-container" class="ship-button-container">
+                <button id="RandomBtn" class = "ship-button">Randomize!</button>
+                <button id="leftBtn" class = "ship-dropbtn">Button 1</button>
+                <text>/</text>
+                <button id="rightBtn" class = "ship-dropbtn">Button 3</button>
+                <button id="Ao3Btn" class = "ship-button">View Fanfics ></button>
+
+                
+            </div>
+
+            <!-- <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                  <!-- <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a> -->
+                </div>
+              </div> -->
+
+        </div>
+
+        <script>
+            // SHIP-RANDOMIZER
+            const shipsvg = d3.select("#ship-visualizer");
+            const shipWidth = shipsvg.attr("width");
+            const shipHeight = shipsvg.attr('height');
+            const shipMargin = {top: 30, right: 10, bottom: 10, left: 10};
+
+            const shipAreaWidth = shipWidth - shipMargin.left - shipMargin.right;
+            const shipAreaHeight = shipHeight - shipMargin.top - shipMargin.bottom;
+
+            const characterArea = shipsvg.append("g")
+                .attr("transform", "translate("+shipMargin.left+","+shipMargin.top+")");
+
+            const IMGWidth = 400;
+
+            const requestCharacterData = async function () {
+                const characterData = await d3.csv("datasets/ShippedCharacters copy.csv")
+ 
+                characterNames = [];
+                characterData.forEach((d, i) => {
+                    characterNames.push(d["Character"])
+                })
+
+                console.log(characterNames)
+
+
+                //Two random characters to start
+        
+                function getRandomName() {
+                    return characterNames[Math.floor(Math.random()*characterNames.length)];
+                }
+
+                // Randomize both names, ensures they are not the same. 
+                function RandomizeNames() {
+                    
+                    leftCharacterName = getRandomName();
+                    rightCharacterName = getRandomName();
+                    while (rightCharacterName == leftCharacterName){
+                        rightCharacterName = getRandomName();
+                    }
+                }
+
+                RandomizeNames();
+        
+
+                let leftCharacter = characterArea.append("image")
+                    .attr("id", "left-character")
+                    .attr("class", "ship-character")
+                    .attr('x', -IMGWidth)
+                    .attr("xlink:href", `datasets/characterImages/${leftCharacterName}.png`)
+
+                let rightCharacter = characterArea.append("image")
+                    .attr("id", "right-character")
+                    .attr("class", "ship-character")
+                    .attr("x",  shipWidth)
+                    .attr("xlink:href", `datasets/characterImages/${rightCharacterName}.png`)
+
+                // buttons
+
+                leftBtn = d3.select("#leftBtn").text(leftCharacterName)
+                rightBtn = d3.select("#rightBtn").text(rightCharacterName)
+                randomBtn = d3.select("#randomBtn")
+                ao3Btn = d3.select('#Ao3Btn')
+
+                // Transition character image to slide in from left or right
+                function SlideIn(left, right) {
+
+                    if (left){
+                        leftCharacter.transition()
+                            .delay(100)
+                            .duration(1000)
+                            .attr("x", shipWidth/2 - IMGWidth)
+                    }
+
+                    if (right){
+                        rightCharacter.transition()
+                            .delay(100)
+                            .duration(1000)
+                            .attr("x", shipWidth/2)
+                    }
+                    
+                }
+
+                // transition character image to slide out, then slide back in with new image
+                function QuickChange(left, right){
+                    if (left){
+                        leftCharacter.transition()
+                            .delay(100)
+                            .duration(800)
+                            .attr("x", -IMGWidth)
+                            .on("end", function() {
+                                leftCharacter.attr("xlink:href", `datasets/characterImages/${leftCharacterName}.png`)
+                                SlideIn(true, false)
+                            })
+
+                        leftBtn.text(leftCharacterName)
+                    }
+
+                    if (right){
+                        rightCharacter.transition()
+                            .delay(100)
+                            .duration(800)
+                            .attr("x", shipWidth)
+                            .on("end", function() {
+                                rightCharacter.attr("xlink:href", `datasets/characterImages/${rightCharacterName}.png`)
+                                SlideIn(false, true)
+                            })
+
+                        rightBtn.text(rightCharacterName)
+                    }
+                    
+                }
+
+                SlideIn(true, true)
+
+                // USER INPUT
+
+                leftBtn.on('click', function() {
+                    leftCharacterName = getRandomName();
+                    QuickChange(true, false)      
+                })
+
+                rightBtn.on('click', function() {
+                    rightCharacterName = getRandomName();
+                    QuickChange(false, true)           
+                })
+
+                randomBtn.on('click', function() {
+                    RandomizeNames();
+                    QuickChange(true, true)
+                })
+
+                ao3Btn.on('click', function() {
+
+                    hyperlink = `https://archiveofourown.org/works/search?work_search%5Bquery%5D=${leftCharacterName}+%2F+${rightCharacterName}`
+                    window.open(hyperlink, '_blank').focus();
+
+                })
+
+
+
+            }
+
+            requestCharacterData(); 
+
+
+            
+
+            
+            
+
+        </script>
+        
     </body>
 </html>

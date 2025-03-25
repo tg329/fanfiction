@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .rect {
+            fill-opacity: 0.8;
+            transition: fill-opacity 0.3s;
+        }
+
+        .rect:hover {
+            fill-opacity: 1;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #000000;
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        #popup {
+            display: none;
+
+            background-color: white;
+            border: 1px solid #000000;
+            padding: 15px;
+            width: 350px;
+            max-height: 150px;
+        }
+
+        .container {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <svg id="top-20" height="750" width="1000"></svg>
+        <div id="popup"></div> <!-- style like ao3 bookmark/fic lol -->
+    </div>
+    <div class="tooltip"></div>
+
+    <script>
+        d3.csv("datasets/INTRO_top20.csv", d3.autoType)
+            .then((data) => {
+                const svg = d3.select("#top-20");
+                const width = svg.attr("width");
+                const height = svg.attr("height");
+                const margins = { top: 35, right: 30, bottom: 150, left: 220 };
+                const chartWidth = width - margins.left - margins.right;
+                const chartHeight = height - margins.top - margins.bottom;
+
+                let chartArea = svg.append("g")
+                    .attr("transform", `translate(${margins.left},${margins.top})`);
+
+                data.forEach(d => d.totalWorks = +d.totalWorks);
+
+                const xScale = d3.scaleLinear()
+                    .domain([0, d3.max(data, d => d.totalWorks)])
+                    .range([0, chartWidth]);
+
+                const yScale = d3.scaleBand()
+                    .domain(data.map(d => d.ship))
+                    .range([0, chartHeight])
+                    .padding(0.2);
+
+                const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+                chartArea.selectAll("rect")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("class", "rect")
+                    .attr("x", 0)
+                    .attr("y", d => yScale(d.ship))
+                    .attr("width", 0)
+                    .attr("height", yScale.bandwidth())
+                    .attr("fill", d => colorScale(d.genre))
+                    .on("mouseover", (event, d) => {
+                        d3.select(".tooltip")
+                            .style("display", "block")
+                            .html(`<strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}`)
+                            .style("left", `${event.pageX + 10}px`)
+                            .style("top", `${event.pageY - 20}px`);
+                    })
+                    .on("mouseout", () => d3.select(".tooltip").style("display", "none"))
+                    .on("click", (event, d) => {
+                        d3.select("#popup")
+                            .style("display", "block")
+                            .html(`<strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}<br>Genre: ${d.genre}<br>Is Canon: ${d.isCanon}<br>RPF: ${d.isRPF}`);
+                    })
+                    .transition()
+                    .duration(500)
+                    .attr("width", d => xScale(d.totalWorks));
+
+                let bottomAxis = d3.axisBottom(xScale);
+                chartArea.append("g")
+                    .attr("transform", `translate(0, ${chartHeight})`)
+                    .call(bottomAxis);
+
+                let leftAxis = d3.axisLeft(yScale);
+                chartArea.append("g")
+                    .call(leftAxis);
+
+                svg.append("text")
+                    .attr("x", margins.left + chartWidth / 2)
+                    .attr("y", chartHeight + margins.top + 45)
+                    .attr("text-anchor", "middle")
+                    .text("Total Works");
+
+                svg.append("text")
+                    .attr("x", -(margins.top + chartHeight / 2))
+                    .attr("y", 16)
+                    .attr("transform", "rotate(-90)")
+                    .attr("text-anchor", "middle")
+                    .text("Ships");
+            });
+    </script>
+</body>
+
+</html>

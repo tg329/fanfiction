@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .circle {
+            fill-opacity: 0.8;
+            transition: fill-opacity 0.3s;
+        }
+
+        .circle:hover {
+            fill-opacity: 1;
+        }
+
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #000000;
+            font-size: 12px;
+            padding: 5px;
+        }
+
+        #popup {
+            display: none;
+            position: fixed;
+            right: 50px;
+            top: 50px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            font-size: 14px;
+            width: 350px;
+            max-height: 200px;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .label {
+            font-size: 10px;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <svg id="top-20" height="750" width="1000"></svg>
+        <div id="popup"></div> <!-- style like ao3 bookmark/fic lol -->
+    </div>
+    <div class="tooltip"></div>
+
+    <script>
+        d3.csv("datasets/INTRO_top20.csv", d3.autoType)
+            .then((data) => {
+                data.sort((a, b) => b.totalWorks - a.totalWorks);
+                data.forEach((d, i) => d.rank = i + 1);
+
+                const svg = d3.select("#top-20");
+                const width = svg.attr("width");
+                const height = svg.attr("height");
+
+                const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+                const radiusScale = d3.scaleSqrt()
+                    .domain([0, d3.max(data, d => d.totalWorks)])
+                    .range([0, 95]); 
+
+                const simulation = d3.forceSimulation(data)
+                    .force("charge", d3.forceManyBody().strength(-30))
+                    .force("center", d3.forceCenter(width / 2, height / 2))
+                    .force("collision", d3.forceCollide().radius(d => radiusScale(d.totalWorks) + 2))
+                    .force("x", d3.forceX().x(d => width / 2))
+                    .force("y", d3.forceY().y(d => height / 2));
+
+                const nodes = svg.selectAll("circle")
+                    .data(data)
+                    .enter().append("circle")
+                    .attr("class", "circle")
+                    .attr("r", d => radiusScale(d.totalWorks))
+                    .attr("fill", d => colorScale(d.fandom))
+                    .on("mouseover", (event, d) => {
+                        d3.select(".tooltip")
+                            .style("display", "block")
+                            .html(`<strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}`)
+                            .style("left", `${event.pageX + 10}px`)
+                            .style("top", `${event.pageY - 20}px`);
+                    })
+                    .on("mouseout", () => d3.select(".tooltip").style("display", "none"))
+                    .on("click", (event, d) => {
+                        d3.select("#popup")
+                            .style("display", "block")
+                            .html(`${d.rank}. <strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}<br>Genre: ${d.genre}<br>Is Canon: ${d.isCanon}<br>RPF: ${d.isRPF}`);
+                    });
+
+                const labels = svg.selectAll(".label")
+                    .data(data)
+                    .enter().append("text")
+                    .attr("class", "label")
+                    .text(d => `${d.rank}. ${d.ship} (${d.totalWorks})`);
+
+                simulation.on("tick", () => {
+                    nodes.attr("cx", d => d.x)
+                         .attr("cy", d => d.y);
+
+                    labels.attr("x", d => d.x)
+                          .attr("y", d => d.y);
+                });
+            });
+    </script>
+</body>
+
+</html>

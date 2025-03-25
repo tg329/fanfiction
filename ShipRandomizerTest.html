@@ -8,47 +8,6 @@
 
         <style>
 
-            /* Dropdown Button */
-.dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
 
         .ship-container {
         display: flex;
@@ -65,11 +24,49 @@
 
         /* https://www.w3schools.com/howto/howto_css_dropdown.asp */
 
+        /* Drop Down */
 
-        .ship-dropbtn {
-            padding: 0px 50px; 
-            cursor: pointer;
+        /* Dropdown Button */
+  
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+        position: relative;
+        display: inline-block;
         }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            height: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            overflow-y: auto;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content button {
+            color: black;
+            padding: 2px 2px;
+            text-decoration: none;
+            display: block;
+            border: none;
+        }
+
+        .dropdown-content button:hover {
+            background-color:  #aa00335e;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .ship-button {background-color: #898989;}
 
         .ship-button {
             padding: 0px 50px; 
@@ -114,22 +111,25 @@
             </div>
             <div id="button-container" class="ship-button-container">
                 <button id="RandomBtn" class = "ship-button">Randomize!</button>
-                <button id="leftBtn" class = "ship-dropbtn">Button 1</button>
+
+                <div class="dropdown">
+                    <button id="leftBtn" class="ship-button">Dropdown</button>
+                    <div id="leftBtn-content" class="dropdown-content">
+                    </div>
+                </div>
+
                 <text>/</text>
-                <button id="rightBtn" class = "ship-dropbtn">Button 3</button>
+                
+                <div class="dropdown">
+                    <button id="rightBtn" class="ship-button">Dropdown</button>
+                    <div id="rightBtn-content" class="dropdown-content">
+                    </div>
+                </div>
+
                 <button id="Ao3Btn" class = "ship-button">View Fanfics ></button>
 
                 
             </div>
-
-            <!-- <div class="dropdown">
-                <button class="dropbtn">Dropdown</button>
-                <div class="dropdown-content">
-                  <!-- <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a> -->
-                </div>
-              </div> -->
 
         </div>
 
@@ -149,11 +149,37 @@
             const IMGWidth = 400;
 
             const requestCharacterData = async function () {
-                const characterData = await d3.csv("datasets/ShippedCharacters copy.csv")
+                const characterData = await d3.csv("datasets/ShippedCharacters.csv")
+
+                // populate dropdown menus
+                leftContent =  d3.select("#leftBtn-Content")
+                rightContent =  d3.select("#rightBtn-Content")
  
                 characterNames = [];
                 characterData.forEach((d, i) => {
-                    characterNames.push(d["Character"])
+                    name = d["Character"];
+
+                    characterNames.push(name)
+
+                    leftContent.append('button')
+                        .text(name)
+                        .attr('name', name)
+                        .on('click', function() {
+                            // check if name is already in use
+                            if (this.name == leftCharacterName || this.name == rightCharacterName) return;
+                            leftCharacterName = this.name;
+                            QuickChange(true, false);
+                        } );
+
+                    rightContent.append('button')
+                        .text(name)
+                        .attr('name', name)
+                        .on('click', function() {
+                            // check if name is already in use
+                            if (this.name == leftCharacterName || this.name == rightCharacterName) return;
+                            rightCharacterName = this.name;
+                            QuickChange(false, true);
+                        } );
                 })
 
                 console.log(characterNames)
@@ -196,6 +222,8 @@
                 rightBtn = d3.select("#rightBtn").text(rightCharacterName)
                 randomBtn = d3.select("#randomBtn")
                 ao3Btn = d3.select('#Ao3Btn')
+
+               
 
                 // Transition character image to slide in from left or right
                 function SlideIn(left, right) {
@@ -249,11 +277,6 @@
                 SlideIn(true, true)
 
                 // USER INPUT
-
-                leftBtn.on('click', function() {
-                    leftCharacterName = getRandomName();
-                    QuickChange(true, false)      
-                })
 
                 rightBtn.on('click', function() {
                     rightCharacterName = getRandomName();

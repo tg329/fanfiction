@@ -85,12 +85,32 @@
         }
         }
 
+        @keyframes text-grow {
+        from {
+            font-size: 30px;
+        }
+
+        to {
+            font-size: 50px;
+        }
+        }
+
         .ship-character {
             width: 400;
             animation-name: bounce;
             animation-duration: 1s;
             animation-direction: alternate;
             animation-iteration-count: infinite;
+        }
+
+        .heart {
+            animation-name: text-grow;
+            animation-duration: 1s;
+            animation-direction: alternate;
+            animation-iteration-count: infinite;
+
+            font-size: 30px;
+            fill: #AA0033
         }
 
         /* https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/animate */
@@ -105,7 +125,7 @@
             <div id="ship-container" class="ship-container" style="background: rgb(255, 255, 255);">
                 <svg id="ship-visualizer" height="400" width="1000" style="background: rgb(207, 207, 207);" >
                     <text id="header" alignment-baseline="hanging" dx= "10" dy = "10">Build Your Own Ship</text>
-                    <text id="heart" alignment-baseline="hanging" text-anchor="middle" x= "500" dy = "100" font-weight=700 style="font-size: 30px; fill: #AA0033 ">&lt3</text>
+                    <text id="heart" class = "heart" alignment-baseline="hanging" text-anchor="middle" x= "500" dy = "100" font-weight=700 >&lt3</text>
                 </svg>
 
             </div>

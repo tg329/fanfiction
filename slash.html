@@ -8,20 +8,11 @@
     <style>
         .circle {
             fill-opacity: 0.8;
-            transition: fill-opacity 0.3s;
+            transition: fill-opacity 0.3s, fill 0.3s;
         }
 
         .circle:hover {
             fill-opacity: 1;
-        }
-
-        .tooltip {
-            display: none;
-            position: absolute;
-            background-color: white;
-            border: 1px solid #000000;
-            font-size: 12px;
-            padding: 5px;
         }
 
         #popup {
@@ -41,9 +32,34 @@
             display: flex;
         }
 
-        .label {
+        .rank,
+        .label,
+        .label2 {
             font-size: 10px;
             text-anchor: middle;
+        }
+
+        .dropdown {
+            margin: 8px;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #000000;
+            transition: border-color 0.3s ease;
+        }
+
+        #reset-button {
+            padding: 12px 24px;
+            background-color: #000000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        #reset-button:hover {
+            transform: scale(1.03);
         }
     </style>
 </head>
@@ -51,67 +67,160 @@
 <body>
     <div class="container">
         <svg id="top-20" height="750" width="1000"></svg>
-        <div id="popup"></div> <!-- style like ao3 bookmark/fic lol -->
+        <div id="popup"></div>
     </div>
-    <div class="tooltip"></div>
+
+    <div>
+        <label for="genre-select">Sort by Genre:</label>
+        <select id="genre-select" class="dropdown">
+            <option value="All">All</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="canon-select">Is it Canon?</label>
+        <select id="canon-select" class="dropdown">
+            <option value="All">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="rpf-select">Real Person Fic?</label>
+        <select id="rpf-select" class="dropdown">
+            <option value="All">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    </div>
+
+    <button id="reset-button">Reset Filters</button>
 
     <script>
-        d3.csv("datasets/INTRO_top20.csv", d3.autoType)
-            .then((data) => {
-                data.sort((a, b) => b.totalWorks - a.totalWorks);
-                data.forEach((d, i) => d.rank = i + 1);
+        const svg = d3.select("#top-20");
+        const width = svg.attr("width");
+        const height = svg.attr("height");
+        const layer = svg.append("g");
 
-                const svg = d3.select("#top-20");
-                const width = svg.attr("width");
-                const height = svg.attr("height");
+        const requestData = async () => {
+            // add photo for each ship, heart shape? custom tags like in ao3 
+            const data = await d3.csv("datasets/INTRO_top20.csv", d3.autoType);
 
-                const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+            const customColors = [
+                "#ff3e41", "#ff8a43", "#ffeead", "#00c9a7", "#2e6ec5", "#DA70D6", "#DE3163", "#91bfca", "#88d8b0", "#86a1db", "#ffcc5c", "#b4dfff", "#ff829b", "#7e3dba", "#4c3a6e"];
 
-                const radiusScale = d3.scaleSqrt()
-                    .domain([0, d3.max(data, d => d.totalWorks)])
-                    .range([0, 95]); 
+            const colorScale = d3.scaleOrdinal(customColors);
 
-                const simulation = d3.forceSimulation(data)
-                    .force("charge", d3.forceManyBody().strength(-30))
-                    .force("center", d3.forceCenter(width / 2, height / 2))
-                    .force("collision", d3.forceCollide().radius(d => radiusScale(d.totalWorks) + 2))
-                    .force("x", d3.forceX().x(d => width / 2))
-                    .force("y", d3.forceY().y(d => height / 2));
+            const radiusScale = d3.scaleSqrt()
+                .domain([0, d3.max(data, d => d.totalWorks)])
+                .range([5, 100]);
 
-                const nodes = svg.selectAll("circle")
+            const simulation = d3.forceSimulation(data)
+                .force("repulse", d3.forceManyBody().strength(-50))
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collision", d3.forceCollide().radius(d => radiusScale(d.totalWorks)))
+                .force("x", d3.forceX().x(d => width / 2)) 
+                .force("y", d3.forceY().y(d => height / 2))
+                .on("tick", render);
+
+            function render() {
+                let nodes = layer.selectAll("circle.node")
                     .data(data)
-                    .enter().append("circle")
-                    .attr("class", "circle")
-                    .attr("r", d => radiusScale(d.totalWorks))
-                    .attr("fill", d => colorScale(d.fandom))
-                    .on("mouseover", (event, d) => {
-                        d3.select(".tooltip")
-                            .style("display", "block")
-                            .html(`<strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}`)
-                            .style("left", `${event.pageX + 10}px`)
-                            .style("top", `${event.pageY - 20}px`);
-                    })
-                    .on("mouseout", () => d3.select(".tooltip").style("display", "none"))
+                    .join(
+                        enter => enter.append("circle")
+                            .attr("class", "node circle")
+                            .attr("r", d => radiusScale(d.totalWorks))
+                            .attr("fill", d => colorScale(d.fandom))
+                            .attr("stroke", "black")
+                            .attr("stroke-width", 1)
+                    )
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y)
                     .on("click", (event, d) => {
                         d3.select("#popup")
                             .style("display", "block")
                             .html(`${d.rank}. <strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}<br>Genre: ${d.genre}<br>Is Canon: ${d.isCanon}<br>RPF: ${d.isRPF}`);
                     });
 
-                const labels = svg.selectAll(".label")
+                data.forEach((d, i) => d.rank = i + 1);
+                let rank = layer.selectAll(".rank")
                     .data(data)
-                    .enter().append("text")
+                    .join("text")
+                    .attr("class", "rank")
+                    .text(d => d.rank)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y - 15)
+                    .style("font-size", "12px")
+                    .style("text-anchor", "middle");
+
+                let label = layer.selectAll(".label")
+                    .data(data)
+                    .join("text")
                     .attr("class", "label")
-                    .text(d => `${d.rank}. ${d.ship} (${d.totalWorks})`);
+                    .text(d => `${d.ship}`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y)
+                    .style("font-size", "10px")
+                    .style("text-anchor", "middle");
 
-                simulation.on("tick", () => {
-                    nodes.attr("cx", d => d.x)
-                         .attr("cy", d => d.y);
+                let label2 = layer.selectAll(".label2")
+                    .data(data)
+                    .join("text")
+                    .attr("class", "label2")
+                    .text(d => `(${d.totalWorks} works)`)
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y + 15)
+                    .style("font-size", "8px")
+                    .style("text-anchor", "middle");
+            }
 
-                    labels.attr("x", d => d.x)
-                          .attr("y", d => d.y);
-                });
+            function applyFilter() {
+                const selectedGenre = d3.select("#genre-select").property("value");
+                const selectedCanon = d3.select("#canon-select").property("value");
+                const selectedRPF = d3.select("#rpf-select").property("value");
+
+                layer.selectAll("circle.node")
+                    .transition()
+                    .duration(150)
+                    .style("opacity", d => {
+                        if (selectedGenre !== "All" && d.genre !== selectedGenre) return 0.3;
+                        if (selectedCanon !== "All" && d.isCanon !== selectedCanon) return 0.3;
+                        if (selectedRPF !== "All" && d.isRPF !== selectedRPF) return 0.3;
+                        return 1;
+                    });
+                layer.selectAll("text.rank, text.label, text.label2")
+                    .transition()
+                    .duration(150)
+                    .style("opacity", d => {
+                        if (selectedGenre !== "All" && d.genre !== selectedGenre) return 0.3;
+                        if (selectedCanon !== "All" && d.isCanon !== selectedCanon) return 0.3;
+                        if (selectedRPF !== "All" && d.isRPF !== selectedRPF) return 0.3;
+                        return 1;
+                    });
+            }
+
+            const genreSelect = d3.select("#genre-select");
+            const genres = Array.from(new Set(data.map(d => d.genre)));
+            genres.forEach(genre => {
+                genreSelect.append("option")
+                    .attr("value", genre)
+                    .text(genre);
             });
+
+            d3.select("#genre-select").on("change", applyFilter);
+            d3.select("#canon-select").on("change", applyFilter);
+            d3.select("#rpf-select").on("change", applyFilter);
+
+            d3.select("#reset-button").on("click", function () {
+                d3.select("#genre-select").property("value", "All");
+                d3.select("#canon-select").property("value", "All");
+                d3.select("#rpf-select").property("value", "All");
+                applyFilter();
+            });
+            render();
+        }
+        requestData();
     </script>
 </body>
 

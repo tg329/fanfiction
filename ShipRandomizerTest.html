@@ -6,6 +6,8 @@
   
         <script src="https://d3js.org/d3.v7.min.js"></script>
 
+        <!-- https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/image -->
+
         <style>
 
 
@@ -103,6 +105,10 @@
             animation-iteration-count: infinite;
         }
 
+        .ship-character:hover {
+            animation-duration: 0.5s;
+        }
+
         .heart {
             animation-name: text-grow;
             animation-duration: 1s;
@@ -111,6 +117,19 @@
 
             font-size: 30px;
             fill: #AA0033
+        }
+
+        .tooltip {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            /* direction: rtl;
+            text-align: right; */
+            /* offset-anchor: end; */
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+
         }
 
         /* https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/animate */
@@ -124,9 +143,10 @@
         <div id="ship-randomizer">
             <div id="ship-container" class="ship-container" style="background: rgb(255, 255, 255);">
                 <svg id="ship-visualizer" height="400" width="1000" style="background: rgb(207, 207, 207);" >
-                    <text id="header" alignment-baseline="hanging" dx= "10" dy = "10">Build Your Own Ship</text>
+                    <text id="header" alignment-baseline="hanging" font-size="25" dx= "10" dy = "10">Build Your Own Ship</text>
                     <text id="heart" class = "heart" alignment-baseline="hanging" text-anchor="middle" x= "500" dy = "100" font-weight=700 >&lt3</text>
                 </svg>
+                <div id = "tooltip" class="tooltip"></div>
 
             </div>
             <div id="button-container" class="ship-button-container">
@@ -178,8 +198,18 @@
                 characterNames = [];
                 characterData.forEach((d, i) => {
                     name = d["Character"];
-
                     characterNames.push(name)
+                })
+
+                console.log(characterNames)
+                
+
+                // sort names alphabetically 
+                charcacterNames = characterNames.sort();
+
+                characterNames.forEach((d, i) => {
+
+                    name = d;
 
                     leftContent.append('button')
                         .text(name)
@@ -200,10 +230,9 @@
                             rightCharacterName = this.name;
                             QuickChange(false, true);
                         } );
+
                 })
-
-                console.log(characterNames)
-
+                
 
                 //Two random characters to start
         
@@ -242,8 +271,6 @@
                 rightBtn = d3.select("#rightBtn").text(rightCharacterName)
                 randomBtn = d3.select("#randomBtn")
                 ao3Btn = d3.select('#Ao3Btn')
-
-               
 
                 // Transition character image to slide in from left or right
                 function SlideIn(left, right) {
@@ -315,6 +342,60 @@
 
                 })
 
+                // add tooltips
+                const tooltip = d3.select("#tooltip");
+                
+                
+
+                console.log(characterData.find(d => d.Character === "Vi"))
+
+                function TooltipFadeIn(isLeft){
+
+                    name = isLeft ? leftCharacterName : rightCharacterName
+                    let character = characterData.find(d => d.Character === name)
+                    
+                    console.log(character)
+                    
+                    tooltip.transition()
+                        .duration(100)
+                        .style("visibility", "visible")
+                        .style("opacity", 1);
+                    
+                    tooltip.html(`
+                    <strong>Fandom: </strong> ${character.Fandom}
+                    <br>(${character.Media})`)
+                    .style("top","200px");
+                        
+                    const tooltipWidth = tooltip.node().offsetWidth;   // Get tooltip width
+                    const tooltipHeight = tooltip.node().offsetHeight; // Get tooltip height
+                    
+                    if (isLeft){
+                        tooltip.style("left", (IMGWidth - tooltipWidth) + "px")
+                    } else {
+                        tooltip.style("left", (shipAreaWidth ) + "px")
+                    }
+
+                }
+
+                function TooltipFadeOut(){
+                    tooltip.transition()
+                        .duration(100)
+                        .style("visibility", "hidden")
+                        .style("opacity", 0);
+                }
+
+
+                leftCharacter.on("mouseover", function (event, d) {
+                    TooltipFadeIn(true); 
+                })
+                .on("mouseout", function (event, d) {
+                    TooltipFadeOut()})
+
+                rightCharacter.on("mouseover", function (event, d) {
+                    TooltipFadeIn(false); 
+                })
+                .on("mouseout", function (event, d) {
+                    TooltipFadeOut()})
 
 
             }

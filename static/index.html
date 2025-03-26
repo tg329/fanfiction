@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title> archive of our own 2.0 </title>
+  <title> Archive of our Own 2.0 </title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     /* NORMAL WEBPAGE CSS */
@@ -29,6 +29,8 @@
       font-size: 40px;
       text-align: center;
       color: #970000;
+      margin: 0px;
+      margin-top: 10px;
     }
 
     .display-box {
@@ -90,12 +92,12 @@
     .content-container {
       border-radius: 3px;
       background-color: #efefef;
-      height: 45em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
       box-sizing: border-box;
-
+      padding-left:10px;
+      padding-right:10px;
     }
 
     .slash-content-container {
@@ -288,7 +290,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top:150px;
+      margin-top: 100px;
     }
 
     .button-container {
@@ -298,12 +300,8 @@
     .ship-button-container {
       display: flex;
       justify-content: center;
-      gap: 3%;
-      margin-top: 5px;
       background-color: #dddddd;
       padding: 30px;
-      padding-bottom: 150px;
-      margin-top: -1.5px;
       z-index: 3;
     }
 
@@ -315,7 +313,6 @@
       padding: 0px;
       width: 150px;
       background-color: #ddd;
-      padding: 5px;
       border-radius: 10px;
       margin: 4px;
       border: none;
@@ -333,7 +330,7 @@
     }
 
     #RandomBtn {
-      background-color: #7c7c7c;
+      background-color: #970000;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -343,14 +340,14 @@
     }
 
     #RandomBtn:hover {
-      background-color: #970000;
+      background-color: #680000;
       transition: background-color 0.3s ease-in-out;
     }
 
     /* #970000 */
 
     #Ao3Btn {
-      background-color: #7c7c7c;
+      background-color: #970000;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -362,7 +359,7 @@
     }
 
     #Ao3Btn:hover {
-      background-color: #970000;
+      background-color: #680000;
       transition: background-color 0.3s ease-in-out;
     }
 
@@ -537,8 +534,8 @@
     #popup {
       display: none;
       left: 50px;
-      margin-right:20px;
-      margin-top:50px;
+      margin-right: 20px;
+      margin-top: 50px;
       background-color: white;
       border: 1px solid #ccc;
       padding: 15px;
@@ -551,8 +548,8 @@
     }
 
     #popup img {
-      max-height:300px;
-      margin-top:20px;
+      max-height: 300px;
+      margin-top: 20px;
       width: 100%;
       height: auto;
       border-radius: 5px;
@@ -579,7 +576,7 @@
 
     #reset-button {
       padding: 12px 24px;
-      background-color: #000000;
+      background-color: #970000;
       color: white;
       border: none;
       cursor: pointer;
@@ -630,10 +627,12 @@
 
       <div class="content-container">
 
-        <img alt="curtain" id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600" style="position: absolute; background-color: #ffffff00;pointer-events: none;">
-        <img alt="curtain" id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600" style="position: absolute; background-color: #ffffff00; transform: scaleX(-1); right: 0;pointer-events: none;">
-        <div id="ship-random-container" >
-          
+        <img alt="curtain" id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
+          style="position: absolute; background-color: #ffffff00;pointer-events: none;">
+        <img alt="curtain" id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
+          style="position: absolute; background-color: #ffffff00; transform: scaleX(-1); right: 0;pointer-events: none;">
+        <div id="ship-random-container">
+
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
             </svg>
@@ -659,6 +658,18 @@
             <button id="Ao3Btn" class="ship-button">fanfics</button>
 
           </div>
+          <p>AO3 (Archive of Our Own) is a
+            community-driven site where fans write, read, and share stories about their favorite characters, ships
+            (character pairings), and
+            worlds. As a site built by fans, for fans, AO3 offers everything from heart-wrenching
+            romance to alternate universes you’d never see in the original works. </p>
+
+          <p>
+            Fanfiction itself is a phenomenon that allows people to expand on the
+            worlds they love, fix disappointing endings, and explore character dynamics.
+            Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
+            communities and
+            inspiring new generations of writers. </p>
         </div>
 
         <!-- ******************* GENDER IDENTITY ******************* -->
@@ -762,7 +773,7 @@
       // curtains
       leftCurtain.setAttribute("hidden", "hidden");
       rightCurtain.setAttribute("hidden", "hidden");
-      if (containerToShow === shipContainer){
+      if (containerToShow === shipContainer) {
         leftCurtain.removeAttribute("hidden");
         rightCurtain.removeAttribute("hidden");
       }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
-  svg {
+  circle_svg {
     width: 120%;
     height: 100%;
   }
@@ -46,7 +46,7 @@
     var height = 500;
     var radius = Math.min(width, height) / 2;
 
-    var svg = d3.select("#circle_charts")
+    var circle_svg = d3.select("#circle_charts")
       .append("svg")
       .attr("width", width)
       .attr("height", height)
@@ -86,16 +86,16 @@
 
       var data_ready = pie(data);
 
-      svg.selectAll("*").remove(); 
+      circle_svg.selectAll("*").remove(); 
 
-      svg.append("circle")
+      circle_svg.append("circle")
         .attr("cx", 0)
         .attr("cy", 0)
         .attr("r", radius)
         .style("fill", "white")
         .style("stroke", "none");
 
-      var u = svg.selectAll("path.slice")
+      var u = circle_svg.selectAll("path.slice")
         .data(data_ready);
 
       u.enter()
@@ -120,7 +120,7 @@
           d3.select(this).transition().duration(300).attr("transform", "scale(1)");
         });
 
-      var text = svg.selectAll("text")
+      var text = circle_svg.selectAll("text")
         .data(data_ready);
 
       text.enter()
@@ -137,7 +137,7 @@
         })
         .text(function(d) { return d.data.response; });
 
-      var polyline = svg.selectAll("polyline")
+      var polyline = circle_svg.selectAll("polyline")
         .data(data_ready);
 
       polyline.enter()

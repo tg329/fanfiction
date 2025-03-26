@@ -10,18 +10,25 @@
       display: none !important;
     }
 
+    .tab.active-tab {
+      background-color: #970000;
+      color: white;
+      z-index: 2;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f7f7f7;
+      color: black;
       margin: 0;
       padding: 3%;
     }
 
     h1 {
       margin: 0px;
-      font-size: 20px;
+      font-size: 40px;
       text-align: center;
-      color: #3c91e6;
+      color: #970000;
     }
 
     .display-box {
@@ -61,7 +68,8 @@
 
 
     .tab:hover {
-      background-color: #afafaf;
+      background-color: #d59797;
+      color: white;
 
       transform: scale(1.05);
       cursor: pointer;
@@ -72,7 +80,7 @@
       display: flex;
 
       background-color: #ddd;
-      color: white;
+      color: black;
       width: 94%;
       padding: 3%;
       border-bottom-right-radius: 10px;
@@ -280,7 +288,7 @@
     .ship-button-container {
       display: flex;
       justify-content: center;
-      gap: 50px;
+      gap: 3%px;
       margin-top: 10px;
     }
 
@@ -379,11 +387,39 @@
       pointer-events: none;
       visibility: hidden;
       position: absolute;
+      color: black;
       background: rgba(255, 255, 255, 0.8);
       z-index: 9999;
 
     }
 
+    /******* GENDER IDENTITY ********/
+    circle_svg888 {
+      width: 120%;
+      height: 100%;
+    }
+
+    path.slice888 {
+      stroke-width: 2px;
+      transition: transform 0.3s ease;
+    }
+
+    polyline888 {
+      opacity: 0.5;
+      stroke: #CC2936;
+      stroke-width: 3px;
+      fill: none;
+    }
+
+    .tooltip888 {
+      position: absolute;
+      padding: 5px;
+      background-color: #EEABC4;
+      color: black;
+      border-radius: 5px;
+      pointer-events: none;
+      opacity: 0;
+    }
 
     /******* SLASH ********/
     .circle {
@@ -502,10 +538,43 @@
         </div>
 
         <!-- ******************* GENDER IDENTITY ******************* -->
+        <div id="gender-identity-container" class="gender-identity-container">
+          <button onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
+            Proportion LGBTQ+
+          </button>
+          <button onclick="updateData888(transgender_data888, 'Do you identify as transgender?')">
+            Proportion Transgender
+          </button>
 
-
+          <div id="circle_charts888"></div>
+          <div class="tooltip888" id="tooltip888"></div>
+        </div>
 
         <!-- ******************* SLASH SHIPS ******************* -->
+        <div class="slash-filters">
+          <label for="genre-select">Sort by Genre:</label>
+          <select id="genre-select" class="dropdown">
+            <option value="All">All</option>
+          </select>
+
+          <label for="canon-select">Is it Canon?</label>
+          <select id="canon-select" class="dropdown">
+            <option value="All">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+
+          <label for="rpf-select">Real Person Fic?</label>
+          <select id="rpf-select" class="dropdown">
+            <option value="All">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          <button id="reset-button">Reset Filters</button>
+        </div>
+
+
+
         <div id="slash-ship-container" class="slash-ship-container">
           <div class="slash-container">
             <svg id="top-20" height="750" width="1000"></svg>
@@ -515,33 +584,6 @@
               </picture>
             </div>
           </div>
-
-          <div>
-            <label for="genre-select">Sort by Genre:</label>
-            <select id="genre-select" class="dropdown">
-              <option value="All">All</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="canon-select">Is it Canon?</label>
-            <select id="canon-select" class="dropdown">
-              <option value="All">All</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="rpf-select">Real Person Fic?</label>
-            <select id="rpf-select" class="dropdown">
-              <option value="All">All</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-
-          <button id="reset-button">Reset Filters</button>
         </div>
 
 
@@ -579,25 +621,50 @@
   <script>
     // ---------------- HOME TABS ---------------- // 
     const tab1 = document.getElementById("tab1");
+    const tab2 = document.getElementById("tab2");
     const tab3 = document.getElementById("tab3");
     const tab4 = document.getElementById("tab4");
 
     const shipContainer = document.getElementById("ship-random-container");
     const fandomContainer = document.getElementById("fandom-container");
     const slashContainer = document.getElementById("slash-ship-container");
+    const genderContainer = document.getElementById("gender-identity-container");
 
     function showOnly(containerToShow) {
-      shipContainer?.classList.add("hidden");
-      fandomContainer?.classList.add("hidden");
-      slashContainer?.classList.add("hidden");
+      [shipContainer, fandomContainer, slashContainer, genderContainer].forEach(container => {
+        container?.classList.add("hidden");
+      });
 
       containerToShow?.classList.remove("hidden");
     }
+    const allTabs = [tab1, tab2, tab3, tab4];
 
-    tab1.addEventListener("click", () => showOnly(shipContainer));
-    tab3.addEventListener("click", () => showOnly(slashContainer));
-    tab4.addEventListener("click", () => showOnly(fandomContainer));
+    function setActiveTab(selectedTab) {
+      allTabs.forEach(tab => tab.classList.remove("active-tab"));
+      selectedTab.classList.add("active-tab");
+    }
 
+    tab1.addEventListener("click", () => {
+      showOnly(shipContainer);
+      setActiveTab(tab1);
+    });
+
+    tab2.addEventListener("click", () => {
+      showOnly(genderContainer);
+      setActiveTab(tab2);
+    });
+
+    tab3.addEventListener("click", () => {
+      showOnly(slashContainer);
+      setActiveTab(tab3);
+    });
+
+    tab4.addEventListener("click", () => {
+      showOnly(fandomContainer);
+      setActiveTab(tab4);
+    });
+
+    setActiveTab(tab1);
     showOnly(shipContainer);
 
     // ---------------- SHIP RANDOMIZER ---------------- // 
@@ -826,6 +893,123 @@
     }
 
     requestCharacterData();
+
+
+    // ---------------- GENDER IDENTITY GRAPHS---------------- //
+    var width888 = 960;
+    var height888 = 500;
+    var radius888 = Math.min(width888, height888) / 2;
+
+    var circle_svg888 = d3.select("#circle_charts888")
+      .append("svg")
+      .attr("width", width888)
+      .attr("height", height888)
+      .append("g")
+      .attr("transform", "translate(" + width888 / 2 + "," + height888 / 2 + ")");
+
+    var color888 = d3.scaleOrdinal()
+      .domain(["Yes", "No", "Unsure", "No Response"])
+      .range(["#08415C", "#6B818C", "#F1BF98", "#EEE5E9"]); //#CC2936 lines
+
+    var lgbtq_data888 = [
+      { response: "No", value: 10 },
+      { response: "Unsure", value: 7.2 },
+      { response: "No Response", value: 1.4 },
+      { response: "Yes", value: 81.4 }
+    ];
+
+    var transgender_data888 = [
+      { response: "Yes", value: 25.1 },
+      { response: "No Response", value: 2.6 },
+      { response: "Unsure", value: 8.3 },
+      { response: "No", value: 64 }
+    ];
+
+    var pie888 = d3.pie()
+      .value(function (d) { return d.value; })
+      .sort(null);
+
+    var arc888 = d3.arc()
+      .outerRadius(radius888 * 0.8)
+      .innerRadius(radius888 * 0.4);
+
+    var tooltip888 = d3.select("#tooltip888");
+
+    function updateData888(data888, title888) {
+      d3.select("#title888").text(title888);
+
+      var data_ready888 = pie888(data888);
+
+      circle_svg888.selectAll("*").remove();
+
+      circle_svg888.append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", radius888)
+        .style("fill", "white")
+        .style("stroke", "none");
+
+      var u888 = circle_svg888.selectAll("path.slice888")
+        .data(data_ready888);
+
+      u888.enter()
+        .append('path')
+        .merge(u888)
+        .attr('d', arc888)
+        .attr('fill', function (d) { return color888(d.data.response); })
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("opacity", 1)
+        .on("mouseover", function (event, d) {
+          tooltip888.transition().duration(200).style("opacity", 1);
+          tooltip888.html(d.data.response + ": " + d.data.value + "%")
+            .style("left", (event.pageX + 5) + "px")
+            .style("top", (event.pageY - 28) + "px");
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
+        })
+        .on("mouseout", function (d) {
+          tooltip888.transition().duration(200).style("opacity", 0);
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1)");
+        });
+
+      var text888 = circle_svg888.selectAll("text")
+        .data(data_ready888);
+
+      text888.enter()
+        .append("text")
+        .merge(text888)
+        .attr("transform", function (d) {
+          var pos = arc888.centroid(d);
+          pos[0] = radius888 * (midAngle888(d) < Math.PI ? 1 : -1);
+          pos[1] -= 10;
+          return "translate(" + pos + ")";
+        })
+        .style("text-anchor", function (d) {
+          return midAngle888(d) < Math.PI ? "start" : "end";
+        })
+        .text(function (d) { return d.data.response; });
+
+      var polyline888 = circle_svg888.selectAll("polyline888")
+        .data(data_ready888);
+
+      polyline888.enter()
+        .append("polyline")
+        .merge(polyline888)
+        .attr("points", function (d) {
+          var pos = arc888.centroid(d);
+          var outerPos = arc888.centroid(d);
+          outerPos[0] = radius888 * 0.95 * (midAngle888(d) < Math.PI ? 1 : -1);
+          outerPos[1] -= 10;
+          return [pos, outerPos];
+        });
+    }
+
+    function midAngle888(d) {
+      return d.startAngle + (d.endAngle - d.startAngle) / 2;
+    }
+    updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?');
 
 
     // ---------------- TOP 50 FANDOMS GRAPHS ---------------- //

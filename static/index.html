@@ -295,7 +295,8 @@
 
 
     .ship-button {
-      background-color: #ddd;;
+      background-color: #ddd;
+      ;
       padding: 5px;
       border-radius: 10px;
       margin: 4px;
@@ -314,15 +315,17 @@
       background-color: transparent;
       padding: 0px;
     }
+
     #rightBtn {
       background-color: transparent;
       padding: 0px;
     }
 
     #leftBtn:hover {
-      color:#3b82f6;
+      color: #3b82f6;
 
     }
+
     #rightBtn:hover {
       color: #3b82f6;
     }
@@ -376,15 +379,11 @@
     }
 
     @keyframes bounce {
-      from {
-        /* translate: 0 2vh; */
-        scale: 1 102%;
+      0% {
+        opacity: 1;
+        transform: translateY(2%);
       }
 
-      to {
-        /* translate: 0 0; */
-        scale: 1 1;
-      }
     }
 
     @keyframes text-grow {
@@ -459,7 +458,7 @@
     }
 
     /******* SLASH CSS********/
-    
+
     .circle {
       fill-opacity: 0.8;
       transition: fill-opacity 0.3s, fill 0.3s;
@@ -518,9 +517,9 @@
 
 
     .slash-filters {
-      display:flex;
+      display: flex;
       justify-content: center;
-      align-content:center;
+      align-content: center;
       align-items: center;
       gap: 1em;
     }

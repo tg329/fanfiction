@@ -2,143 +2,409 @@
 <html lang="en">
 
 <head>
-    <title> ao4 </title>
+  <title> ao4 </title>
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
 
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 3%;
-        }
+  <style>
+    /* NORMAL WEBPAGE */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 3%;
+    }
 
-        h1 {
-            margin: 0px;
-            font-size: 20px;
-            text-align: center;
-            color: #970000;
-        }
+    h1 {
+      margin: 0px;
+      font-size: 20px;
+      text-align: center;
+      color: #970000;
+    }
 
-        .display-box {
-            margin-top: 0px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 1%;
-        }
+    .display-box {
+      margin-top: 0px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1%;
+    }
 
-        .tabs {
-            display: flex;
-            justify-content: space-between;
-            /* distributes tabs evenly */
-            width: 100%;
-            /* match viz-container width */
-            /* margin-bottom: 5px; */
-            /* gap: 2% */
-        }
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      /* distributes tabs evenly */
+      width: 100%;
+      /* match viz-container width */
+      /* margin-bottom: 5px; */
+      /* gap: 2% */
+    }
 
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 1.5%;
-            /* padding-top: 2%; */
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 1.5%;
+      /* padding-top: 2%; */
 
-            background-color: #970000;
-            color: white;
-            /* border-top-left-radius: 22px;
+      background-color: #970000;
+      color: white;
+      /* border-top-left-radius: 22px;
             border-top-right-radius: 22px; */
-            border: 2px solid #5b0000;
+      border: 2px solid #5b0000;
 
-            border-bottom: none;
-            box-sizing: border-box;
+      border-bottom: none;
+      box-sizing: border-box;
 
-            transition: all 0.2s ease-in-out;
-        }
+      transition: all 0.2s ease-in-out;
+    }
 
 
-        .tab:hover {
-            background-color: #791111;
+    .tab:hover {
+      background-color: #791111;
 
-            transform: scale(1.05);
-            cursor: pointer;
-            z-index: 1;
-        }
+      transform: scale(1.05);
+      cursor: pointer;
+      z-index: 1;
+    }
 
-        .viz-container {
-            background-color: #333333;
-            color: white;
-            width: 94%;
-            padding: 3%;
-        }
+    .viz-container {
+      background-color: #333333;
+      color: white;
+      width: 94%;
+      padding: 3%;
+    }
 
-        .content-container {
-            background-color: #f7f7f7;
-            height: 40em;
-            overflow-y: scroll;
-            position: relative;
-            box-sizing: border-box;
+    .content-container {
+      background-color: #f7f7f7;
+      height: 40em;
+      overflow-y: scroll;
+      position: relative;
+      box-sizing: border-box;
 
-            scrollbar-color: #8b0000 #d3d3d3;
-            scrollbar-width: auto;
-        }
+    }
 
-        .content-container::-webkit-scrollbar {
-            width: 14px;
-        }
 
-        .content-container::-webkit-scrollbar-track {
-            background: #d3d3d3;
-            border-left: 2px solid #999;
-            box-shadow: inset 1px 1px 4px #aaa;
-        }
+    /*************** FANDOMS STYLE **************/
+    .fan-container {
+      padding: 1.6em;
+    }
 
-        .content-container::-webkit-scrollbar-thumb {
-            background: #8b0000;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            box-shadow: inset 0 0 3px #333;
-        }
+    h2 {
+      color: #333333;
+      text-align: center;
+    }
 
-        .content-container::-webkit-scrollbar-thumb:hover {
-            background: #a30000;
-        }
-    </style>
+
+    .fandom-grid {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .fandom {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: .5rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .fandom-title {
+      color: #5998d6;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .genre {
+      font-size: 0.7rem;
+      color: #555;
+      margin-bottom: 0rem;
+    }
+
+    /* bar animation */
+    .percent-bar>div {
+      transition:
+        transform 0.2s ease,
+        z-index 0.2s ease,
+        box-shadow 0.2s ease,
+        filter 0.2s ease;
+      z-index: 0;
+      transform-origin: center;
+    }
+
+    .bar-nb:hover {
+      min-width: 48px;
+    }
+
+    .percent-bar>div:hover {
+      transform: scaleX(1.08);
+      box-shadow: 0 0 6px rgba(0.4, 0.4, 0.4, 0.4);
+      filter: brightness(1.10);
+      z-index: 1;
+    }
+
+    .bar-label {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+      line-height: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .percent-bar>div:hover .bar-label {
+      opacity: 1;
+    }
+
+    .percent-bar {
+      height: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+      display: flex;
+      margin-top: 0.5rem;
+    }
+
+    .bar-men {
+      background: #3b82f6;
+    }
+
+    .bar-women {
+      background: #ec4899;
+    }
+
+    .bar-nb {
+      background: #a855f7;
+    }
+
+    /**** LEGEND *****/
+    .legend {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .legend-color.bar-men {
+      background: #3b82f6;
+    }
+
+    .legend-color.bar-women {
+      background: #ec4899;
+    }
+
+    .legend-color.bar-nb {
+      background: #a855f7;
+    }
+
+    /* FILTER BUTTONS */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .filter-btn.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
-    <h1>Archive of Our Own Oven</h1>
+  <h1>Archive of Our Own Oven</h1>
 
-    <div class="display-box">
-        <div class="tabs">
-            <div class="tab" id="tab1">
-                build your ship
-            </div>
+  <div class="display-box">
+    <div class="tabs">
+      <div class="tab" id="tab1">
+        build your ship
+      </div>
 
-            <div class="tab" id="tab2">
-                gender identity
-            </div>
+      <div class="tab" id="tab2">
+        gender identity
+      </div>
 
-            <div class="tab" id="tab3">
-                slash
-            </div>
+      <div class="tab" id="tab3">
+        slash
+      </div>
 
-            <div class="tab" id="tab4">
-                top 50 fandoms
-            </div>
-        </div>
-
-        <div class="viz-container">
-            <div class="content-container">
-                <p>content goes here</p>
-            </div>
-        </div>
+      <div class="tab" id="tab4">
+        top 50 fandoms
+      </div>
     </div>
 
-    <script>
+    <div class="viz-container">
+      <div class="content-container">
+        <div class="fan-container">
+          <!-- <h2>Top 50 fandoms</h2> -->
 
-    </script>
+          <div class="filters" id="genre-filters"></div>
+
+          <div class="legend">
+            <div class="legend-item">
+              <span class="legend-color bar-men"></span> Men
+            </div>
+            <div class="legend-item">
+              <span class="legend-color bar-women"></span> Women
+            </div>
+            <div class="legend-item">
+              <span class="legend-color bar-nb"></span> Nonbinary
+            </div>
+          </div>
+
+          <div class="fandom-grid">
+            <div class="column" id="col-1"></div>
+            <div class="column" id="col-2"></div>
+            <div class="column" id="col-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    d3.csv("datasets/SLASH_topFandoms.csv").then(data => {
+      data.forEach(d => {
+        d.menPercent = +d.menPercent;
+        d.womenPercent = +d.womenPercent;
+        d.nonbinaryPercent = +d.nonbinaryPercent;
+        d.wnbPercent = +d.wnbPercent;
+      });
+
+      const topFandoms = data
+        .sort((a, b) => d3.descending(a.wnbPercent, b.wnbPercent))
+        .slice(0, 50)
+        .map((d, i) => ({ ...d, rank: i + 1 }));
+
+      // three columns
+      const col1 = d3.select("#col-1");
+      const col2 = d3.select("#col-2");
+      const col3 = d3.select("#col-3");
+
+      const columns = [col1, col2, col3];
+
+      // BUTTONS
+      const genres = Array.from(new Set(data.map(d => d.genre))).sort();
+      genres.unshift("All");   // all 
+
+      // GENRE COLORS
+      const genreColors = {
+        "Superhero": "#facc15",
+        "Fantasy": "#8b5cf6",
+        "Crime": "#f87171",
+        "Science Fiction": "#38bdf8",
+        "Video Game": "#34d399",
+        "Sports": "#fb923c",
+        "Historical": "#e879f9"
+      };
+
+      const filterContainer = d3.select("#genre-filters");
+      let currentGenre = "All";
+
+      filterContainer.selectAll("button")
+        .data(genres)
+        .enter()
+        .append("button")
+        .attr("class", d => `filter-btn${d === "All" ? " active" : ""}`)
+        .text(d => d)
+        .on("click", function (event, selectedGenre) {
+          currentGenre = selectedGenre;
+          d3.selectAll(".filter-btn").classed("active", false);
+          d3.select(this).classed("active", true);
+
+          renderFandoms();
+        });
+
+      function renderFandoms() {
+        // Clear all columns first
+        columns.forEach(col => col.html(""));
+
+        const filteredFandoms = currentGenre === "All"
+          ? topFandoms
+          : topFandoms.filter(d => d.genre === currentGenre);
+
+        filteredFandoms.forEach((d, i) => {
+          const col = columns[i % 3]; // or 5 if using 5 columns
+          const fandom = col.append("div").attr("class", "fandom");
+          fandom.style("border-left", `6px solid ${genreColors[d.genre] || "#ccc"}`);
+
+          const header = fandom.append("div").attr("class", "fandom-header");
+          header.append("div")
+            .attr("class", "fandom-title")
+            .text(`#${d.rank} ${d.fandom}`);
+          header.append("div")
+            .attr("class", "genre")
+            .text(d.genre);
+
+          // Percent bar
+          const bar = fandom.append("div")
+            .attr("class", "percent-bar")
+            .style("position", "relative");
+
+          function addSegment(className, percent, label) {
+            const segment = bar.append("div")
+              .attr("class", className)
+              .style("width", percent + "%")
+              .style("position", "relative");
+
+            if (percent > 0) {
+              segment.append("div")
+                .attr("class", "bar-label")
+                .text(`${percent.toFixed(1)}%`);
+            }
+
+            segment.append("title").text(`${label}: ${percent.toFixed(1)}%`);
+          }
+
+          addSegment("bar-men", d.menPercent, "Men");
+          addSegment("bar-women", d.womenPercent, "Women");
+          addSegment("bar-nb", d.nonbinaryPercent, "Nonbinary");
+        });
+      }
+      renderFandoms();
+    });
+
+  </script>
 
 </body>
 

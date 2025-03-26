@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title> ao4 </title>
+  <title> archive of our own 2.0 </title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
     /* NORMAL WEBPAGE CSS */
@@ -18,20 +18,17 @@
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: whitney, helvetica, arial, sans-serif;
       background: #f7f7f7;
       color: black;
       margin: 0;
-      padding: 3%;
     }
 
     h1 {
       /* background: #970000; */
-      margin: -30px;
       font-size: 40px;
       text-align: center;
       color: #970000;
-      padding: 20px;
     }
 
     .display-box {
@@ -39,7 +36,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 3%;
+      padding: 2%;
     }
 
     .tabs {
@@ -74,7 +71,7 @@
       background-color: #aaa5a5;
       color: white;
 
-      transform: scale(1.05);
+      transform: scale(1.02);
       cursor: pointer;
       z-index: 1;
     }
@@ -93,7 +90,7 @@
     .content-container {
       border-radius: 3px;
       background-color: #efefef;
-      height: 40em;
+      height: 45em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
@@ -291,8 +288,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-left: -5%;
-      margin-top: 10%;
+      margin-top:150px;
     }
 
     .button-container {
@@ -335,7 +331,6 @@
       background-color: transparent;
       padding: 0px;
     }
-
 
     #RandomBtn {
       background-color: #7c7c7c;
@@ -541,15 +536,26 @@
 
     #popup {
       display: none;
-      position: fixed;
       left: 50px;
-      bottom: 50px;
+      margin-right:20px;
+      margin-top:50px;
       background-color: white;
       border: 1px solid #ccc;
       padding: 15px;
       font-size: 14px;
-      width: 350px;
-      max-height: 1000px;
+      width: 500px;
+      max-height: 550px;
+      border-radius: 5px;
+      overflow-y: auto;
+      line-height: 30px;
+    }
+
+    #popup img {
+      max-height:300px;
+      margin-top:20px;
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
     }
 
     .slash-container {
@@ -573,7 +579,7 @@
 
     #reset-button {
       padding: 12px 24px;
-      background-color: #3b82f6;
+      background-color: #000000;
       color: white;
       border: none;
       cursor: pointer;
@@ -597,7 +603,7 @@
 </head>
 
 <body>
-  <h1>A O 4</h1>
+  <h1>Archive of our Own 2.0</h1>
 
   <div class="display-box">
     <div class="tabs">
@@ -692,7 +698,7 @@
             <button id="reset-button">Reset Filters</button>
           </div>
           <div class="slash-container">
-            <svg id="top-20" height="750" width="1000"></svg>
+            <svg id="top-20" height="750" width="800"></svg>
             <div id="popup">
               <picture>
                 <img src="datasets/shipImages/" alt="ship image">
@@ -1296,10 +1302,10 @@
                 Fandom: ${d.fandom}<br>
                 Works: ${d.totalWorks}<br>
                 Genre: ${d.genre}<br>
-                Is Canon: ${d.isCanon}<br>
-                RPF: ${d.isRPF}<br>
+                Is it Canon: ${d.isCanon}<br>
+                Real Person Fic: ${d.isRPF}<br>
                 <img src="datasets/shipImages/${d.totalWorks}.png" alt="${d.ship}" style="width:100%; height:auto;"><br>
-                ${d.quotes}<br>
+                ${d.quotes}
                 
                             `);
             });

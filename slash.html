@@ -25,7 +25,7 @@
             padding: 15px;
             font-size: 14px;
             width: 350px;
-            max-height: 200px;
+            max-height: 1000px;
         }
 
         .container {
@@ -67,7 +67,11 @@
 <body>
     <div class="container">
         <svg id="top-20" height="750" width="1000"></svg>
-        <div id="popup"></div>
+        <div id="popup">
+            <picture>
+                <image src="datasets/shipImages/"></image>
+            </picture>
+        </div>
     </div>
 
     <div>
@@ -103,8 +107,8 @@
         const height = svg.attr("height");
         const layer = svg.append("g");
 
-        const requestData = async () => {
-            // add photo for each ship, heart shape? custom tags like in ao3 
+        const requestData = async () => { 
+            //heart shape instead of circles? custom tags like in ao3 for context
             const data = await d3.csv("datasets/INTRO_top20.csv", d3.autoType);
 
             const customColors = [
@@ -120,7 +124,7 @@
                 .force("repulse", d3.forceManyBody().strength(-50))
                 .force("center", d3.forceCenter(width / 2, height / 2))
                 .force("collision", d3.forceCollide().radius(d => radiusScale(d.totalWorks)))
-                .force("x", d3.forceX().x(d => width / 2)) 
+                .force("x", d3.forceX().x(d => width / 2))
                 .force("y", d3.forceY().y(d => height / 2))
                 .on("tick", render);
 
@@ -140,7 +144,17 @@
                     .on("click", (event, d) => {
                         d3.select("#popup")
                             .style("display", "block")
-                            .html(`${d.rank}. <strong>${d.ship}</strong><br>Fandom: ${d.fandom}<br>Works: ${d.totalWorks}<br>Genre: ${d.genre}<br>Is Canon: ${d.isCanon}<br>RPF: ${d.isRPF}`);
+                            .html(`
+                                ${d.rank}. <strong>${d.ship}</strong><br>
+                                Fandom: ${d.fandom}<br>
+                                Works: ${d.totalWorks}<br>
+                                Genre: ${d.genre}<br>
+                                Is Canon: ${d.isCanon}<br>
+                                RPF: ${d.isRPF}<br>
+                                <img src="datasets/shipImages/${d.totalWorks}.png" alt="${d.ship}" style="width:100%; height:auto;"><br>
+                                ${d.quotes}<br>
+                                
+                            `);
                     });
 
                 data.forEach((d, i) => d.rank = i + 1);

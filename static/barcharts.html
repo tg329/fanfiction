@@ -13,6 +13,19 @@
         .gridlines line {
             stroke: #9a9a9a;
         }
+
+        .tooltip {
+            pointer-events: none;
+            visibility: hidden;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            /* direction: rtl;
+            text-align: right; */
+            /* offset-anchor: end; */
+            /* lazy way to make sure tooltip is always on top */
+            z-index: 9999;
+
+        }
     
 
         </style>
@@ -21,14 +34,15 @@
     <body>
         <h1>Fan Fiction</h1>
 
-        <svg id="barchart" height="500" width="800" style="background: rgb(176, 176, 176);"> </svg>
+        <svg id="barchart" height="500" width="800" style="background: rgb(195, 195, 195);"> </svg>
+        <div id="tooltip" class="tooltip"></div>
 
         <script>
 
             const barsvg = d3.select("#barchart");
             const barWidth = barsvg.attr("width");
             const barHeight = barsvg.attr("height");
-            const barMargin = {top: 20, right: 20, bottom: 30, left: 60};
+            const barMargin = {top: 20, right: 60, bottom: 30, left: 100};
 
             const barAreaWidth = barWidth - barMargin.left - barMargin.right;
             const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
@@ -120,13 +134,68 @@
                     .attr('y', d => countScale(d.uniqueFandoms))
                     .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueFandoms))
                     .attr('width', yearScale.bandwidth())
+                    .attr('year', d => d.year)
 
                 // HOVERS
+                const tooltip = d3.select("#tooltip");
+
+
+                function highlightBar(event, d) {
+
+                    uniqueShips.filter(data => data.year === d.year)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "5")
+
+            
+                    uniqueFandoms.filter(data => data.year === d.year)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "5")
+
+                    tooltip.transition()
+                        .duration(100)
+                        .style("visibility", "visible")
+                        .style("opacity", 1);
+                        
+                    tooltip.html(`
+                    <strong># Unqiue Ships:</strong> ${d.uniqueShips}
+                    <br><strong># Unqiue Fandoms: </strong>${d.uniqueFandoms}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 20) + "px");
+                    
+
+                }
+                function undoHighlightBar(event, d) {
+
+                    uniqueShips.filter(data => data.year === d.year)
+                        .attr("stroke", "none")
+                        .attr("stroke-width", "5")
+
+
+                    uniqueFandoms.filter(data => data.year === d.year)
+                        .attr("stroke", "none")
+                        .attr("stroke-width", "5")
+
+                    tooltip.transition()
+                    .duration(100)
+                    .style("visibility", "hidden")
+                    .style("opacity", 0);
+
+                }   
 
                 uniqueShips.on("mouseover", function (event, d) {
-                    console.log(d)
-                    console.log(event)
+                   highlightBar(event, d)
+                }).on("mouseout", function(event, d) {
+                    undoHighlightBar(event,d)
                 })
+
+                uniqueFandoms.on("mouseover", function (event, d) {
+                   highlightBar(event, d)
+                }).on("mouseout", function(event, d) {
+                    undoHighlightBar(event,d)
+                })
+
+
+
 
 
                 // LEGEND

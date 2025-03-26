@@ -5,7 +5,7 @@
   <title> ao4 </title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <style>
-    /* NORMAL WEBPAGE */
+    /* NORMAL WEBPAGE CSS */
     .hidden {
       display: none !important;
     }
@@ -68,7 +68,7 @@
 
 
     .tab:hover {
-      background-color: #d59797;
+      background-color: #aaa5a5;
       color: white;
 
       transform: scale(1.05);
@@ -114,7 +114,7 @@
       height: 640px;
     } */
 
-    /*************** FANDOMS STYLE **************/
+    /*************** FANDOMS CSS **************/
     .fan-container {
       padding: 1.6em;
     }
@@ -279,7 +279,7 @@
     }
 
 
-    /******* BUILD YOUR OWN SHIP ********/
+    /******* BUILD YOUR OWN SHIP CSS ********/
     .ship-container {
       display: flex;
       justify-content: center;
@@ -393,7 +393,7 @@
 
     }
 
-    /******* GENDER IDENTITY ********/
+    /******* GENDER IDENTITY CSS ********/
     circle_svg888 {
       width: 120%;
       height: 100%;
@@ -421,7 +421,8 @@
       opacity: 0;
     }
 
-    /******* SLASH ********/
+    /******* SLASH CSS********/
+    
     .circle {
       fill-opacity: 0.8;
       transition: fill-opacity 0.3s, fill 0.3s;
@@ -434,8 +435,8 @@
     #popup {
       display: none;
       position: fixed;
-      right: 50px;
-      top: 50px;
+      left: 50px;
+      bottom: 50px;
       background-color: white;
       border: 1px solid #ccc;
       padding: 15px;
@@ -466,7 +467,7 @@
 
     #reset-button {
       padding: 12px 24px;
-      background-color: #000000;
+      background-color: #3b82f6;
       color: white;
       border: none;
       cursor: pointer;
@@ -476,6 +477,15 @@
 
     #reset-button:hover {
       transform: scale(1.03);
+    }
+
+
+    .slash-filters {
+      display:flex;
+      justify-content: center;
+      align-content:center;
+      align-items: center;
+      gap: 1em;
     }
   </style>
 </head>
@@ -551,31 +561,31 @@
         </div>
 
         <!-- ******************* SLASH SHIPS ******************* -->
-        <div class="slash-filters">
-          <label for="genre-select">Sort by Genre:</label>
-          <select id="genre-select" class="dropdown">
-            <option value="All">All</option>
-          </select>
-
-          <label for="canon-select">Is it Canon?</label>
-          <select id="canon-select" class="dropdown">
-            <option value="All">All</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-
-          <label for="rpf-select">Real Person Fic?</label>
-          <select id="rpf-select" class="dropdown">
-            <option value="All">All</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-          </select>
-          <button id="reset-button">Reset Filters</button>
-        </div>
 
 
 
         <div id="slash-ship-container" class="slash-ship-container">
+          <div class="slash-filters">
+            <label for="genre-select">Sort by Genre:</label>
+            <select id="genre-select" class="dropdown">
+              <option value="All">All</option>
+            </select>
+
+            <label for="canon-select">Is it Canon?</label>
+            <select id="canon-select" class="dropdown">
+              <option value="All">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+
+            <label for="rpf-select">Real Person Fic?</label>
+            <select id="rpf-select" class="dropdown">
+              <option value="All">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <button id="reset-button">Reset Filters</button>
+          </div>
           <div class="slash-container">
             <svg id="top-20" height="750" width="1000"></svg>
             <div id="popup">

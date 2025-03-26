@@ -1,15 +1,145 @@
-<html>
-    <head>
-        <title> HW4: Critque and Revise </title>
+<!DOCTYPE html>
+<html lang="en">
 
-        <script src="https://d3js.org/d3.v7.min.js"></script>
+<head>
+    <title> ao4 </title>
 
-        <style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 
-        </style>
-    </head>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 3%;
+        }
 
-    <body>
-        <h1>Fan Fiction</h1>
-    </body>
+        h1 {
+            margin: 0px;
+            font-size: 20px;
+            text-align: center;
+            color: #970000;
+        }
+
+        .display-box {
+            margin-top: 0px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1%;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            /* distributes tabs evenly */
+            width: 100%;
+            /* match viz-container width */
+            /* margin-bottom: 5px; */
+            /* gap: 2% */
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 1.5%;
+            /* padding-top: 2%; */
+
+            background-color: #970000;
+            color: white;
+            /* border-top-left-radius: 22px;
+            border-top-right-radius: 22px; */
+            border: 2px solid #5b0000;
+
+            border-bottom: none;
+            box-sizing: border-box;
+
+            transition: all 0.2s ease-in-out;
+        }
+
+
+        .tab:hover {
+            background-color: #791111;
+
+            transform: scale(1.05);
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .viz-container {
+            background-color: #333333;
+            color: white;
+            width: 94%;
+            padding: 3%;
+        }
+
+        .content-container {
+            background-color: #f7f7f7;
+            height: 40em;
+            overflow-y: scroll;
+            position: relative;
+            box-sizing: border-box;
+
+            scrollbar-color: #8b0000 #d3d3d3;
+            scrollbar-width: auto;
+        }
+
+        .content-container::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .content-container::-webkit-scrollbar-track {
+            background: #d3d3d3;
+            border-left: 2px solid #999;
+            box-shadow: inset 1px 1px 4px #aaa;
+        }
+
+        .content-container::-webkit-scrollbar-thumb {
+            background: #8b0000;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 0 3px #333;
+        }
+
+        .content-container::-webkit-scrollbar-thumb:hover {
+            background: #a30000;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Archive of Our Own Oven</h1>
+
+    <div class="display-box">
+        <div class="tabs">
+            <div class="tab" id="tab1">
+                build your ship
+            </div>
+
+            <div class="tab" id="tab2">
+                gender identity
+            </div>
+
+            <div class="tab" id="tab3">
+                slash
+            </div>
+
+            <div class="tab" id="tab4">
+                top 50 fandoms
+            </div>
+        </div>
+
+        <div class="viz-container">
+            <div class="content-container">
+                <p>content goes here</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+    </script>
+
+</body>
+
 </html>

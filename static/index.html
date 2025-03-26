@@ -296,7 +296,6 @@
 
     .ship-button {
       background-color: #ddd;
-      ;
       padding: 5px;
       border-radius: 10px;
       margin: 4px;
@@ -379,11 +378,15 @@
     }
 
     @keyframes bounce {
-      0% {
-        opacity: 1;
-        transform: translateY(2%);
-      }
+        from {
+            translate: 0 2vh;
+            scale: 1 102%;
+        }
 
+        to {
+            translate: 0 0;
+            scale: 1 1;
+        }
     }
 
     @keyframes text-grow {
@@ -415,6 +418,8 @@
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
+
+      text-anchor: middle;
 
       fill: #AA0033
     }
@@ -559,7 +564,6 @@
             <svg id="ship-visualizer" height="400" width="1000">
             </svg>
             <div id="tooltip" class="tooltip"></div>
-            <text id="heart" class="heart" font-weight=700>(3</text>
           </div>
           <div id="button-container" class="ship-button-container">
             <button id="RandomBtn" class="ship-button">Randomize!</button>
@@ -785,7 +789,7 @@
 
       RandomizeNames();
 
-
+      // add images
       let leftCharacter = characterArea.append("image")
         .attr("id", "left-character")
         .attr("class", "ship-character")
@@ -797,6 +801,14 @@
         .attr("class", "ship-character")
         .attr("x", shipWidth)
         .attr("xlink:href", `datasets/characterImages/${rightCharacterName}.png`)
+
+      // add heart
+
+      characterArea.append("text")
+        .attr("class", "heart")
+        .attr("x", shipWidth/2)
+        .attr("y", 100)
+        .text("<3")
 
       // buttons
 

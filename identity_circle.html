@@ -8,6 +8,7 @@
 
   path.slice {
     stroke-width: 2px;
+    transition: transform 0.3s ease;
   }
 
   polyline {
@@ -29,10 +30,9 @@
 </style>
 
 <body>
-  <!-- Title to update dynamically -->
+
   <h1 id="title">Default Title</h1>
 
-  <!-- Buttons for changing data -->
   <button onclick="updateData(lgbtq_data, 'Do you identify as LGBTQ+ in any form?')">Proportion LGBTQ+</button>
   <button onclick="updateData(transgender_data, 'Do you identify as transgender?')">Proportion Transgender</button>
 
@@ -45,6 +45,7 @@
     var width = 960;
     var height = 500;
     var radius = Math.min(width, height) / 2;
+
     var svg = d3.select("#circle_charts")
       .append("svg")
       .attr("width", width)
@@ -80,12 +81,20 @@
 
     var tooltip = d3.select("#tooltip");
 
-    // Update data and title
     function updateData(data, title) {
-      // Update the title
       d3.select("#title").text(title);
 
       var data_ready = pie(data);
+
+      svg.selectAll("*").remove(); 
+
+      svg.append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", radius)
+        .style("fill", "white")
+        .style("stroke", "none");
+
       var u = svg.selectAll("path.slice")
         .data(data_ready);
 
@@ -102,12 +111,15 @@
           tooltip.html(d.data.response + ": " + d.data.value + "%")
             .style("left", (event.pageX + 5) + "px")
             .style("top", (event.pageY - 28) + "px");
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
         })
         .on("mouseout", function(d) {
           tooltip.transition().duration(200).style("opacity", 0);
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1)");
         });
 
-      // Add labels
       var text = svg.selectAll("text")
         .data(data_ready);
 

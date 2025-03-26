@@ -25,7 +25,7 @@
             padding: 15px;
             font-size: 14px;
             width: 350px;
-            max-height: 400px;
+            max-height: 1000px;
         }
 
         .container {
@@ -151,7 +151,9 @@
                                 Genre: ${d.genre}<br>
                                 Is Canon: ${d.isCanon}<br>
                                 RPF: ${d.isRPF}<br>
-                                <img src="datasets/shipImages/${d.totalWorks}.png" alt="${d.ship}" style="width:100%; height:auto;">
+                                <img src="datasets/shipImages/${d.totalWorks}.png" alt="${d.ship}" style="width:100%; height:auto;"><br>
+                                ${d.quotes}<br>
+                                
                             `);
                     });
 

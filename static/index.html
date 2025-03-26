@@ -564,7 +564,11 @@
       <!-- ******************* SHIP RANDOMIZER ******************* -->
 
       <div class="content-container">
-        <div id="ship-random-container" class="ship-random-container">
+
+        <img id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600" style="position: absolute; background-color: #ffffff00;">
+        <img id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600" style="position: absolute; background-color: #ffffff00; transform: scaleX(-1); right: 0;">
+        <div id="ship-random-container" >
+          
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
             </svg>
@@ -682,10 +686,21 @@
     const slashContainer = document.getElementById("slash-ship-container");
     const genderContainer = document.getElementById("gender-identity-container");
 
+    const leftCurtain = document.getElementById("leftCurtain");
+    const rightCurtain = document.getElementById("rightCurtain");
+
     function showOnly(containerToShow) {
       [shipContainer, fandomContainer, slashContainer, genderContainer].forEach(container => {
         container?.classList.add("hidden");
       });
+
+      // curtains
+      leftCurtain.setAttribute("hidden", "hidden");
+      rightCurtain.setAttribute("hidden", "hidden");
+      if (containerToShow === shipContainer){
+        leftCurtain.removeAttribute("hidden");
+        rightCurtain.removeAttribute("hidden");
+      }
 
       containerToShow?.classList.remove("hidden");
     }

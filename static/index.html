@@ -271,7 +271,7 @@
       border-radius: 5px;
       background-color: #ddd;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: background-color 0.2s ease-in-out;
     }
 
     .filter-btn.active {
@@ -289,9 +289,47 @@
     .ship-button-container {
       display: flex;
       justify-content: center;
-      gap: 3%px;
+      gap: 3%;
       margin-top: 10px;
     }
+
+
+    .ship-button {
+      background-color: #ddd;
+      ;
+      padding: 5px;
+      border-radius: 10px;
+      margin: 4px;
+      border: none;
+    }
+
+    .ship-button:hover {
+      background-color: #3b82f6;
+      color: white;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+
+
+    #leftBtn {
+      background-color: transparent;
+      padding: 0px;
+    }
+
+    #rightBtn {
+      background-color: transparent;
+      padding: 0px;
+    }
+
+    #leftBtn:hover {
+      color: #3b82f6;
+
+    }
+
+    #rightBtn:hover {
+      color: #3b82f6;
+    }
+
 
 
     /* The container <div> - needed to position the dropdown content */
@@ -341,15 +379,11 @@
     }
 
     @keyframes bounce {
-      from {
-        /* translate: 0 2vh; */
-        scale: 1 102%;
+      0% {
+        opacity: 1;
+        transform: translateY(2%);
       }
 
-      to {
-        /* translate: 0 0; */
-        scale: 1 1;
-      }
     }
 
     @keyframes text-grow {
@@ -375,12 +409,13 @@
     }
 
     .heart {
+
+      /* margin-left:  */
       animation-name: text-grow;
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
 
-      font-size: 30px;
       fill: #AA0033
     }
 
@@ -394,6 +429,7 @@
 
     }
 
+
     /******* GENDER IDENTITY CSS ********/
     circle_svg888 {
       width: 120%;
@@ -405,7 +441,7 @@
       transition: transform 0.3s ease;
     }
 
-    polyline888 {
+    polyline {
       opacity: 0.5;
       stroke: #CC2936;
       stroke-width: 3px;
@@ -423,7 +459,7 @@
     }
 
     /******* SLASH CSS********/
-    
+
     .circle {
       fill-opacity: 0.8;
       transition: fill-opacity 0.3s, fill 0.3s;
@@ -482,9 +518,9 @@
 
 
     .slash-filters {
-      display:flex;
+      display: flex;
       justify-content: center;
-      align-content:center;
+      align-content: center;
       align-items: center;
       gap: 1em;
     }
@@ -492,7 +528,7 @@
 </head>
 
 <body>
-  <h1>Archive of Our Own Oven</h1>
+  <h1>A O 4</h1>
 
   <div class="display-box">
     <div class="tabs">
@@ -521,10 +557,9 @@
         <div id="ship-random-container" class="ship-random-container">
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
-              <text id="header">Build Your Own Ship</text>
-              <text id="heart" class="heart" font-weight=700>♡</text>
             </svg>
             <div id="tooltip" class="tooltip"></div>
+            <text id="heart" class="heart" font-weight=700>(3</text>
           </div>
           <div id="button-container" class="ship-button-container">
             <button id="RandomBtn" class="ship-button">Randomize!</button>
@@ -1002,12 +1037,12 @@
         })
         .text(function (d) { return d.data.response; });
 
-      var polyline888 = circle_svg888.selectAll("polyline888")
+      var polyline = circle_svg888.selectAll("polyline")
         .data(data_ready888);
 
-      polyline888.enter()
+      polyline.enter()
         .append("polyline")
-        .merge(polyline888)
+        .merge(polyline)
         .attr("points", function (d) {
           var pos = arc888.centroid(d);
           var outerPos = arc888.centroid(d);

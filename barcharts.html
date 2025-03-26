@@ -1,0 +1,138 @@
+<html>
+    <head>
+        <title> HW4: Critque and Revise </title>
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+
+        .gridlines .domain {
+            display: none;
+            }
+            
+        .gridlines line {
+            stroke: #9a9a9a;
+        }
+    
+
+        </style>
+    </head>
+
+    <body>
+        <h1>Fan Fiction</h1>
+
+        <svg id="barchart" height="500" width="800" style="background: rgb(176, 176, 176);"> </svg>
+
+        <script>
+
+            const barsvg = d3.select("#barchart");
+            const barWidth = barsvg.attr("width");
+            const barHeight = barsvg.attr("height");
+            const barMargin = {top: 20, right: 20, bottom: 30, left: 60};
+
+            const barAreaWidth = barWidth - barMargin.left - barMargin.right;
+            const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
+
+            const legend = barsvg.append("g")
+                .attr("transform", "translate("+barMargin.left+","+barMargin.top+")");
+
+            const barChartArea = barsvg.append("g")
+                .attr("transform", "translate("+barMargin.left+","+barMargin.top+")");
+
+            const annotations = barChartArea.append('g')
+
+            const requestBarChartData = async function() {
+
+                topStats = await d3.csv("datasets/INTRO_topStats.csv", d3.autoType)
+                console.log(topStats)
+
+                years = []
+
+                topStats.forEach(d => {
+                    years.push(d.year);
+                });
+
+               
+                // Y axis: Counts
+
+                shipsExtent = d3.extent(topStats, d=>d.uniqueShips)
+                fandomsExtent = d3.extent(topStats, d=>d.uniqueFandoms)
+
+                const countExtent = [d3.min([shipsExtent[0], fandomsExtent[0]]),
+                                    d3.max([shipsExtent[1], fandomsExtent[1]])]
+
+                const countScale = d3.scaleLinear()
+                    .domain(countExtent)
+                    .range([barAreaHeight, 0])
+
+                let leftAxis = d3.axisLeft(countScale)
+                    .tickFormat(d3.format("~f")) // no commas
+
+                let leftGridlines = d3.axisLeft(countScale)
+                            .tickSize(-barAreaWidth+10)
+                            .tickFormat("")
+                
+                annotations.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform",`translate(${-10},${0})`)
+                    .call(leftAxis)
+
+                annotations.append("g")
+                 .attr("class", "y gridlines")
+                 .attr("transform",`translate(${-10},${0})`)
+                 .call(leftGridlines);
+
+                 // X axis: Years
+
+                 const yearScale = d3.scaleBand()
+                    .domain(years)
+                    .range([0, barAreaWidth])
+                    .padding(0.1);
+
+                let bottomAxis = d3.axisBottom(yearScale)
+                    .tickFormat(d3.format("~f")) // no commas
+
+                annotations.append('g')
+                    .attr('class', 'x axis')
+                    .attr("transform",`translate(0,${barAreaHeight})`)
+                    .call(bottomAxis);
+
+
+                // draw bars
+
+
+                // UNIQUE SHIPS
+                uniqueShips = barChartArea.selectAll('rect.ship').data(topStats, d => d['year'])
+                    .join('rect')
+                    .attr('class', 'bar')
+                    .attr('fill', 'steelblue')
+                    .attr('x', d => yearScale(d.year))
+                    .attr('y', d => countScale(d.uniqueShips))
+                    .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueShips))
+                    .attr('width', yearScale.bandwidth())
+
+                // UNIQUE FANDOMS
+                uniqueFandoms = barChartArea.selectAll('rect.fandom').data(topStats, d => d['year'])
+                    .join('rect')
+                    .attr('class', 'bar')
+                    .attr('fill', 'orange')
+                    .attr('x', d => yearScale(d.year))
+                    .attr('y', d => countScale(d.uniqueFandoms))
+                    .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueFandoms))
+                    .attr('width', yearScale.bandwidth())
+
+
+                // LEGEND
+
+
+
+
+
+            }
+
+            requestBarChartData();
+
+
+        </script>
+    </body>
+</html>

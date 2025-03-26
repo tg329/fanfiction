@@ -38,7 +38,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 2%;
     }
 
     .tabs {
@@ -55,7 +54,6 @@
       flex: 1;
       text-align: center;
       padding: 1%;
-      padding-top: 1.5%;
 
       background-color: #ddd;
       color: black;
@@ -72,7 +70,6 @@
     .tab:hover {
       background-color: #aaa5a5;
       color: white;
-
       transform: scale(1.03);
       cursor: pointer;
       z-index: 1;
@@ -90,9 +87,8 @@
     }
 
     .content-container {
-      border-radius: 3px;
+      border-radius: 6px;
       background-color: #efefef;
-      height: 40em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
@@ -101,7 +97,7 @@
     }
 
     .slash-content-container {
-      border-radius: 3px;
+      border-radius: 6px;
       background-color: #f7f7f7;
       height: 40em;
       width: 100%;
@@ -139,8 +135,7 @@
       padding-top: 10px;
       padding-bottom: 10px;
       border-radius: 16px;
-      margin: 30px;
-      margin-bottom: 44px;
+      margin: 18px;
     }
 
     .column {
@@ -214,7 +209,7 @@
 
     .percent-bar {
       height: 20px;
-      border-radius: 5px;
+      border-radius: 6px;
       overflow: hidden;
       display: flex;
       margin-top: 0.5rem;
@@ -255,7 +250,7 @@
     .legend-color {
       width: 16px;
       height: 16px;
-      border-radius: 3px;
+      border-radius: 10px;
       display: inline-block;
     }
 
@@ -284,7 +279,7 @@
       padding: 0.4rem 0.75rem;
       font-size: 0.85rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       background-color: #ddd;
       cursor: pointer;
       transition: background-color 0.2s ease-in-out;
@@ -301,7 +296,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 100px;
+      margin-top: 50px;
     }
 
     .button-container {
@@ -324,8 +319,7 @@
       padding: 0px;
       width: 150px;
       background-color: #ddd;
-      border-radius: 10px;
-      margin: 4px;
+      border-radius: 6px;
       border: none;
     }
 
@@ -340,35 +334,20 @@
       padding: 0px;
     }
 
-    #RandomBtn {
-      background-color: #970000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
+    #RandomBtn, #Ao3Btn  {
       text-transform: lowercase;
-    }
-
-    #RandomBtn:hover {
-      background-color: #680000;
-      transition: background-color 0.3s ease-in-out;
-    }
-
-    /* #970000 */
-
-    #Ao3Btn {
+      padding: 12px 24px;
       background-color: #970000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       color: white;
-      text-transform: lowercase;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
 
     }
 
-    #Ao3Btn:hover {
-      background-color: #680000;
-      transition: background-color 0.3s ease-in-out;
+    #RandomBtn:hover, #Ao3Btn:hover { 
+      transform: scale(1.03);
     }
 
     #rightBtn {
@@ -389,13 +368,9 @@
 
     /* The container <div> - needed to position the dropdown content */
     .dropdown {
-      background-color: #f1f1f1;
+      background-color: #ffffff;
       padding: 40px;
-      position: relative;
-      display: inline-block;
     }
-
-
 
     .dropdown-content {
       display: none;
@@ -438,14 +413,13 @@
     }
 
     .ship-button {
-      padding: 0px 50px;
       cursor: pointer;
     }
 
     @keyframes bounce {
       from {
         translate: 0 2vh;
-        scale: 1 102%;
+        scale: 1 101%;
       }
 
       to {
@@ -456,7 +430,7 @@
 
     @keyframes text-grow {
       from {
-        font-size: 30px;
+        font-size: 40px;
       }
 
       to {
@@ -466,6 +440,7 @@
 
     .ship-character {
       width: 400px;
+      margin-top:500px;
       animation-name: bounce;
       animation-duration: 1s;
       animation-direction: alternate;
@@ -477,15 +452,12 @@
     }
 
     .heart {
-
-      /* margin-left:  */
       animation-name: text-grow;
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
 
       text-anchor: middle;
-
       fill: #AA0033
     }
 
@@ -502,13 +474,13 @@
 
     /******* GENDER IDENTITY CSS ********/
     circle_svg888 {
-      width: 120%;
+      width: 100%;
       height: 100%;
     }
 
     path.slice888 {
-      stroke-width: 2px;
-      transition: transform 0.3s ease;
+      stroke-width: 1px;
+      transition: transform 0.5s ease;
     }
 
     polyline {
@@ -523,15 +495,33 @@
       padding: 5px;
       background-color: #EEABC4;
       color: black;
-      border-radius: 5px;
+      border-radius: 6px;
       pointer-events: none;
       opacity: 0;
     }
 
+    #gender{
+      padding: 12px 24px;
+      background-color: #970000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+      margin:20px;
+      width:300px;
+      height:50px;
+    }
+
+    #gender:hover {
+      transform: scale(1.03);
+    }
+  
+
     /******* SLASH CSS********/
 
     .circle {
-      fill-opacity: 0.8;
+      fill-opacity: 0.75;
       transition: fill-opacity 0.3s, fill 0.3s;
     }
 
@@ -604,6 +594,8 @@
       align-items: center;
       gap: 1em;
     }
+
+
   </style>
 </head>
 
@@ -621,7 +613,7 @@
       </div>
 
       <div class="tab" id="tab3">
-        slash ships
+        top 20 ships
       </div>
 
       <div class="tab" id="tab4">
@@ -684,10 +676,10 @@
 
         <!-- ******************* GENDER IDENTITY ******************* -->
         <div id="gender-identity-container" class="gender-identity-container">
-          <button onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
+          <button id = "gender" onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
             Do you identify as LGBTQ+ in any form?
           </button>
-          <button onclick="updateData888(transgender_data888, 'Do you identify as transgender?')">
+          <button id = "gender" onclick="updateData888(transgender_data888, 'Do you identify as transgender?')">
             Do you identify as transgender?
           </button>
 
@@ -698,7 +690,7 @@
         <!-- ******************* SLASH SHIPS ******************* -->
         <div id="slash-ship-container" class="slash-ship-container">
           <div class="fan-descr">
-            <p>Here is a visualization of the top 20 most popular slash ships on AO3.
+            <p>Here is a visualization of the top 20 most popular ships on Ao3, colored by fandom.
               Click on each circle to view more information about the pairing!
             </p>
           </div>

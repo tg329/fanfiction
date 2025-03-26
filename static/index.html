@@ -73,7 +73,7 @@
       background-color: #aaa5a5;
       color: white;
 
-      transform: scale(1.02);
+      transform: scale(1.03);
       cursor: pointer;
       z-index: 1;
     }
@@ -97,7 +97,7 @@
       overflow-y: scroll;
       position: relative;
       box-sizing: border-box;
-  
+
     }
 
     .slash-content-container {
@@ -137,7 +137,7 @@
       color: black;
       padding: 30px;
       padding-top: 10px;
-      padding-bottom:10px;
+      padding-bottom: 10px;
       border-radius: 16px;
       margin: 30px;
       margin-bottom: 44px;
@@ -291,7 +291,7 @@
     }
 
     .filter-btn.active {
-      background-color: #3b82f6;
+      background-color: #970000;
       color: white;
     }
 
@@ -345,7 +345,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0px;
       color: white;
       text-transform: lowercase;
     }
@@ -362,8 +361,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0px;
-      padding: 0px;
       color: white;
       text-transform: lowercase;
 
@@ -637,7 +634,6 @@
       <!-- ******************* SHIP RANDOMIZER ******************* -->
 
       <div class="content-container">
-
         <img alt="curtain" id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
           style="position: absolute; background-color: #ffffff00;pointer-events: none;">
         <img alt="curtain" id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
@@ -669,19 +665,22 @@
             <button id="Ao3Btn" class="ship-button">search on ao3</button>
 
           </div>
-          <p>Ao3 (Archive of Our Own) is a
-            community-driven site where fans write, read, and share stories about their favorite characters, ships
-            (character pairings), and
-            worlds. As a site built by fans, for fans, AO3 offers everything from heart-wrenching
-            romance to alternate universes you’d never see in the original works. </p>
-
-          <p>
-            Fanfiction itself is a phenomenon that allows people to expand on the
-            worlds they love and explore character dynamics.
-            Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
-            communities and
-            inspiring new generations of writers. </p>
+          <div class="fan-descr">
+            <p>Ao3 (Archive of Our Own) is a
+              community-driven site where fans write, read, and share stories about their favorite characters, ships
+              (character pairings), and
+              worlds. As a site built by fans, for fans, AO3 offers everything from heart-wrenching
+              romance to alternate universes you’d never see in the original works. </p>
+  
+            <p>
+              Fanfiction itself is a phenomenon that allows people to expand on the
+              worlds they love and explore character dynamics.
+              Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
+              communities and
+              inspiring new generations of writers. </p>
+          </div>
         </div>
+      
 
         <!-- ******************* GENDER IDENTITY ******************* -->
         <div id="gender-identity-container" class="gender-identity-container">
@@ -837,7 +836,7 @@
     const shipsvg = d3.select("#ship-visualizer");
     const shipWidth = shipsvg.attr("width");
     const shipHeight = shipsvg.attr('height');
-    const shipMargin = { top: 30, right: 10, bottom: 10, left: 10 };
+    const shipMargin = { top: 0, right: 10, bottom: 0, left: 10 };
 
     const shipAreaWidth = shipWidth - shipMargin.left - shipMargin.right;
     const shipAreaHeight = shipHeight - shipMargin.top - shipMargin.bottom;

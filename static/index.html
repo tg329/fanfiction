@@ -409,12 +409,13 @@
     }
 
     .heart {
+
+      /* margin-left:  */
       animation-name: text-grow;
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
 
-      font-size: 30px;
       fill: #AA0033
     }
 
@@ -556,10 +557,9 @@
         <div id="ship-random-container" class="ship-random-container">
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
-              <text id="header">Build Your Own Ship</text>
-              <text id="heart" class="heart" font-weight=700>♡</text>
             </svg>
             <div id="tooltip" class="tooltip"></div>
+            <text id="heart" class="heart" font-weight=700>(3</text>
           </div>
           <div id="button-container" class="ship-button-container">
             <button id="RandomBtn" class="ship-button">Randomize!</button>

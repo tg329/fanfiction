@@ -68,6 +68,8 @@
     }
 
     .viz-container {
+      display:flex;
+
       background-color: #333333;
       color: white;
       width: 94%;
@@ -77,12 +79,16 @@
     .content-container {
       background-color: #f7f7f7;
       height: 40em;
+      width: 100%;
       overflow-y: scroll;
       position: relative;
       box-sizing: border-box;
 
     }
 
+    .fake-scroll {
+      height: 640px;
+    }
 
     /*************** FANDOMS STYLE **************/
     .fan-container {
@@ -127,6 +133,7 @@
       color: #555;
       margin-bottom: 0rem;
     }
+    
 
     /* bar animation */
     .percent-bar>div {
@@ -297,6 +304,7 @@
           </div>
         </div>
       </div>
+      <img class="fake-scroll" src="datasets/images/fake-scroll.png" alt="scroll">
     </div>
   </div>
 
@@ -356,7 +364,6 @@
         });
 
       function renderFandoms() {
-        // Clear all columns first
         columns.forEach(col => col.html(""));
 
         const filteredFandoms = currentGenre === "All"

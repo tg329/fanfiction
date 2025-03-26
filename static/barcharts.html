@@ -33,13 +33,13 @@
             const barAreaWidth = barWidth - barMargin.left - barMargin.right;
             const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
 
-            const legend = barsvg.append("g")
-                .attr("transform", "translate("+barMargin.left+","+barMargin.top+")");
-
             const barChartArea = barsvg.append("g")
-                .attr("transform", "translate("+barMargin.left+","+barMargin.top+")");
+                .attr("transform", "translate("+(barMargin.left)+","+barMargin.top+")");
 
             const annotations = barChartArea.append('g')
+
+            const legend = barsvg.append("g")
+                .attr("transform", "translate("+(barMargin.left + 30)+","+(barMargin.top + 30)+")");
 
             const requestBarChartData = async function() {
 
@@ -121,9 +121,58 @@
                     .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueFandoms))
                     .attr('width', yearScale.bandwidth())
 
+                // HOVERS
+
+                uniqueShips.on("mouseover", function (event, d) {
+                    console.log(d)
+                    console.log(event)
+                })
+
 
                 // LEGEND
+                const legendHeight = 70;
+                const legendWidth = 200;
 
+                // container
+                legend.append('rect')
+                    .attr('fill', 'gray')
+                    .attr('height', legendHeight)
+                    .attr('width', legendWidth)
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('opacity', 0.7)
+
+                //key
+                legend.append('rect')
+                    .attr('fill', 'steelblue')
+                    .attr('height', 20)
+                    .attr('width', 20)
+                    .attr('x', 20)
+                    .attr('y', legendHeight / 4 - 10)
+                    .attr('stroke', 'black')
+
+                legend.append('rect')
+                    .attr('fill', 'orange')
+                    .attr('height', 20)
+                    .attr('width', 20)
+                    .attr('x', 20)
+                    .attr('y', 3 * legendHeight / 4 - 10)
+                    .attr('stroke', 'black')
+            
+
+                legend.append('text')
+                    .text("Unique Fandoms")
+                    .attr("alignment-baseline", "middle")
+                    .attr('x', legendWidth/3)
+                    .attr('y', legendHeight / 4)
+
+                legend.append('text')
+                    .text("Unique Ships")
+                    .attr("alignment-baseline", "middle")
+                    .attr('x', legendWidth/3)
+                    .attr('y', 3 * legendHeight / 4)
+
+                
 
 
 

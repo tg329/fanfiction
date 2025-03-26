@@ -441,7 +441,7 @@
       transition: transform 0.3s ease;
     }
 
-    polyline888 {
+    polyline {
       opacity: 0.5;
       stroke: #CC2936;
       stroke-width: 3px;
@@ -1038,12 +1038,12 @@
         })
         .text(function (d) { return d.data.response; });
 
-      var polyline888 = circle_svg888.selectAll("polyline888")
+      var polyline = circle_svg888.selectAll("polyline")
         .data(data_ready888);
 
-      polyline888.enter()
+      polyline.enter()
         .append("polyline")
-        .merge(polyline888)
+        .merge(polyline)
         .attr("points", function (d) {
           var pos = arc888.centroid(d);
           var outerPos = arc888.centroid(d);

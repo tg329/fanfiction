@@ -3,11 +3,13 @@
 
 <head>
   <title> ao4 </title>
-
   <script src="https://d3js.org/d3.v7.min.js"></script>
-
   <style>
     /* NORMAL WEBPAGE */
+    .hidden {
+      display: none !important;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #f7f7f7;
@@ -78,11 +80,23 @@
     }
 
     .content-container {
-      border-radius:3px;
+      border-radius: 3px;
       background-color: #f7f7f7;
       height: 40em;
       width: 100%;
       overflow-y: scroll;
+      position: relative;
+      box-sizing: border-box;
+
+    }
+
+    .slash-content-container {
+      border-radius: 3px;
+      background-color: #f7f7f7;
+      height: 40em;
+      width: 100%;
+      overflow-y: scroll;
+      overflow-x: scroll;
       position: relative;
       box-sizing: border-box;
 
@@ -255,6 +269,178 @@
       background-color: #3b82f6;
       color: white;
     }
+
+
+    /******* BUILD YOUR OWN SHIP ********/
+    .ship-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ship-button-container {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 10px;
+    }
+
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f1f1f1;
+      min-width: 160px;
+      height: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      overflow-y: auto;
+    }
+
+    .dropdown-content button {
+      color: black;
+      padding: 2px 2px;
+      text-decoration: none;
+      display: block;
+      border: none;
+    }
+
+    .dropdown-content button:hover {
+      background-color: #aa00335e;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown:hover .ship-button {
+      background-color: #898989;
+    }
+
+    .ship-button {
+      padding: 0px 50px;
+      cursor: pointer;
+    }
+
+    @keyframes bounce {
+      from {
+        /* translate: 0 2vh; */
+        scale: 1 102%;
+      }
+
+      to {
+        /* translate: 0 0; */
+        scale: 1 1;
+      }
+    }
+
+    @keyframes text-grow {
+      from {
+        font-size: 30px;
+      }
+
+      to {
+        font-size: 50px;
+      }
+    }
+
+    .ship-character {
+      width: 400px;
+      animation-name: bounce;
+      animation-duration: 1s;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+    }
+
+    .ship-character:hover {
+      animation-duration: 0.5s;
+    }
+
+    .heart {
+      animation-name: text-grow;
+      animation-duration: 1s;
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+
+      font-size: 30px;
+      fill: #AA0033
+    }
+
+    .tooltip {
+      pointer-events: none;
+      visibility: hidden;
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 9999;
+
+    }
+
+
+    /******* SLASH ********/
+    .circle {
+      fill-opacity: 0.8;
+      transition: fill-opacity 0.3s, fill 0.3s;
+    }
+
+    .circle:hover {
+      fill-opacity: 1;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      right: 50px;
+      top: 50px;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 15px;
+      font-size: 14px;
+      width: 350px;
+      max-height: 1000px;
+    }
+
+    .slash-container {
+      display: flex;
+    }
+
+    .rank,
+    .label,
+    .label2 {
+      font-size: 10px;
+      text-anchor: middle;
+    }
+
+    .dropdown {
+      margin: 8px;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #000000;
+      transition: border-color 0.3s ease;
+    }
+
+    #reset-button {
+      padding: 12px 24px;
+      background-color: #000000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+    }
+
+    #reset-button:hover {
+      transform: scale(1.03);
+    }
   </style>
 </head>
 
@@ -280,14 +466,87 @@
       </div>
     </div>
 
-    <!-- TOP FANDOMS -->
     <div class="viz-container">
 
-
+      <!-- ******************* SHIP RANDOMIZER ******************* -->
 
       <div class="content-container">
+        <div id="ship-random-container" class="ship-random-container">
+          <div id="ship-container" class="ship-container">
+            <svg id="ship-visualizer" height="400" width="1000">
+              <text id="header">Build Your Own Ship</text>
+              <text id="heart" class="heart" font-weight=700>♡</text>
+            </svg>
+            <div id="tooltip" class="tooltip"></div>
+          </div>
+          <div id="button-container" class="ship-button-container">
+            <button id="RandomBtn" class="ship-button">Randomize!</button>
 
-        <div class="fan-container">
+            <div class="dropdown">
+              <button id="leftBtn" class="ship-button">Dropdown</button>
+              <div id="leftBtn-content" class="dropdown-content">
+              </div>
+            </div>
+
+            <p>/</p>
+
+            <div class="dropdown">
+              <button id="rightBtn" class="ship-button">Dropdown</button>
+              <div id="rightBtn-content" class="dropdown-content">
+              </div>
+            </div>
+
+            <button id="Ao3Btn" class="ship-button">View Fanfics ></button>
+
+          </div>
+        </div>
+
+        <!-- ******************* GENDER IDENTITY ******************* -->
+
+
+
+        <!-- ******************* SLASH SHIPS ******************* -->
+        <div id="slash-ship-container" class="slash-ship-container">
+          <div class="slash-container">
+            <svg id="top-20" height="750" width="1000"></svg>
+            <div id="popup">
+              <picture>
+                <img src="datasets/shipImages/" alt="ship image">
+              </picture>
+            </div>
+          </div>
+
+          <div>
+            <label for="genre-select">Sort by Genre:</label>
+            <select id="genre-select" class="dropdown">
+              <option value="All">All</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="canon-select">Is it Canon?</label>
+            <select id="canon-select" class="dropdown">
+              <option value="All">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="rpf-select">Real Person Fic?</label>
+            <select id="rpf-select" class="dropdown">
+              <option value="All">All</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <button id="reset-button">Reset Filters</button>
+        </div>
+
+
+        <!-- ******************* TOP FANDOMS ******************* -->
+        <div id="fandom-container" class="fan-container">
           <!-- <h2>Top 50 fandoms</h2> -->
 
           <div class="legend">
@@ -318,9 +577,258 @@
 
 
   <script>
+    // ---------------- HOME TABS ---------------- // 
+    const tab1 = document.getElementById("tab1");
+    const tab3 = document.getElementById("tab3");
+    const tab4 = document.getElementById("tab4");
+
+    const shipContainer = document.getElementById("ship-random-container");
+    const fandomContainer = document.getElementById("fandom-container");
+    const slashContainer = document.getElementById("slash-ship-container");
+
+    function showOnly(containerToShow) {
+      shipContainer?.classList.add("hidden");
+      fandomContainer?.classList.add("hidden");
+      slashContainer?.classList.add("hidden");
+
+      containerToShow?.classList.remove("hidden");
+    }
+
+    tab1.addEventListener("click", () => showOnly(shipContainer));
+    tab3.addEventListener("click", () => showOnly(slashContainer));
+    tab4.addEventListener("click", () => showOnly(fandomContainer));
+
+    showOnly(shipContainer);
+
+    // ---------------- SHIP RANDOMIZER ---------------- // 
+    const shipsvg = d3.select("#ship-visualizer");
+    const shipWidth = shipsvg.attr("width");
+    const shipHeight = shipsvg.attr('height');
+    const shipMargin = { top: 30, right: 10, bottom: 10, left: 10 };
+
+    const shipAreaWidth = shipWidth - shipMargin.left - shipMargin.right;
+    const shipAreaHeight = shipHeight - shipMargin.top - shipMargin.bottom;
+
+    const characterArea = shipsvg.append("g")
+      .attr("transform", "translate(" + shipMargin.left + "," + shipMargin.top + ")");
+
+    const IMGWidth = 400;
+
+    const requestCharacterData = async function () {
+      const characterData = await d3.csv("datasets/ShippedCharacters.csv")
+
+      // populate dropdown menus
+      leftContent = d3.select("#leftBtn-Content")
+      rightContent = d3.select("#rightBtn-Content")
+
+      characterNames = [];
+      characterData.forEach((d, i) => {
+        name = d["Character"];
+        characterNames.push(name)
+      })
+
+      console.log(characterNames)
+
+      charcacterNames = characterNames.sort();
+      characterNames.forEach((d, i) => {
+
+        name = d;
+
+        leftContent.append('button')
+          .text(name)
+          .attr('name', name)
+          .on('click', function () {
+            // check if name is already in use
+            if (this.name == leftCharacterName || this.name == rightCharacterName) return;
+            leftCharacterName = this.name;
+            QuickChange(true, false);
+          });
+
+        rightContent.append('button')
+          .text(name)
+          .attr('name', name)
+          .on('click', function () {
+            // check if name is already in use
+            if (this.name == leftCharacterName || this.name == rightCharacterName) return;
+            rightCharacterName = this.name;
+            QuickChange(false, true);
+          });
+
+      })
 
 
-    // ---------------- TOP 50 FANDOMS GRAPHS ----------------
+      //Two random characters to start
+
+      function getRandomName() {
+        return characterNames[Math.floor(Math.random() * characterNames.length)];
+      }
+
+      // Randomize both names, ensures they are not the same. 
+      function RandomizeNames() {
+
+        leftCharacterName = getRandomName();
+        rightCharacterName = getRandomName();
+        while (rightCharacterName == leftCharacterName) {
+          rightCharacterName = getRandomName();
+        }
+      }
+
+      RandomizeNames();
+
+
+      let leftCharacter = characterArea.append("image")
+        .attr("id", "left-character")
+        .attr("class", "ship-character")
+        .attr('x', -IMGWidth)
+        .attr("xlink:href", `datasets/characterImages/${leftCharacterName}.png`)
+
+      let rightCharacter = characterArea.append("image")
+        .attr("id", "right-character")
+        .attr("class", "ship-character")
+        .attr("x", shipWidth)
+        .attr("xlink:href", `datasets/characterImages/${rightCharacterName}.png`)
+
+      // buttons
+
+      leftBtn = d3.select("#leftBtn").text(leftCharacterName)
+      rightBtn = d3.select("#rightBtn").text(rightCharacterName)
+      randomBtn = d3.select("#randomBtn")
+      ao3Btn = d3.select('#Ao3Btn')
+
+      // Transition character image to slide in from left or right
+      function SlideIn(left, right) {
+
+        if (left) {
+          leftCharacter.transition()
+            .delay(100)
+            .duration(1000)
+            .attr("x", shipWidth / 2 - IMGWidth)
+        }
+
+        if (right) {
+          rightCharacter.transition()
+            .delay(100)
+            .duration(1000)
+            .attr("x", shipWidth / 2)
+        }
+
+      }
+
+      // transition character image to slide out, then slide back in with new image
+      function QuickChange(left, right) {
+        if (left) {
+          leftCharacter.transition()
+            .delay(100)
+            .duration(800)
+            .attr("x", -IMGWidth)
+            .on("end", function () {
+              leftCharacter.attr("xlink:href", `datasets/characterImages/${leftCharacterName}.png`)
+              SlideIn(true, false)
+            })
+
+          leftBtn.text(leftCharacterName)
+        }
+
+        if (right) {
+          rightCharacter.transition()
+            .delay(100)
+            .duration(800)
+            .attr("x", shipWidth)
+            .on("end", function () {
+              rightCharacter.attr("xlink:href", `datasets/characterImages/${rightCharacterName}.png`)
+              SlideIn(false, true)
+            })
+
+          rightBtn.text(rightCharacterName)
+        }
+
+      }
+
+      SlideIn(true, true)
+
+      // USER INPUT
+
+      rightBtn.on('click', function () {
+        rightCharacterName = getRandomName();
+        QuickChange(false, true)
+      })
+
+      randomBtn.on('click', function () {
+        RandomizeNames();
+        QuickChange(true, true)
+      })
+
+      ao3Btn.on('click', function () {
+
+        hyperlink = `https://archiveofourown.org/works/search?work_search%5Bquery%5D=${leftCharacterName}+%2F+${rightCharacterName}`
+        window.open(hyperlink, '_blank').focus();
+
+      })
+
+      // add tooltips
+      const tooltip = d3.select("#tooltip");
+
+
+
+      console.log(characterData.find(d => d.Character === "Vi"))
+
+      function TooltipFadeIn(isLeft) {
+
+        name = isLeft ? leftCharacterName : rightCharacterName
+        let character = characterData.find(d => d.Character === name)
+
+        console.log(character)
+
+        tooltip.transition()
+          .duration(100)
+          .style("visibility", "visible")
+          .style("opacity", 1);
+
+        tooltip.html(`
+                    <strong>Fandom: </strong> ${character.Fandom}
+                    <br>(${character.Media})`)
+          .style("top", "200px");
+
+        const tooltipWidth = tooltip.node().offsetWidth;   // Get tooltip width
+        const tooltipHeight = tooltip.node().offsetHeight; // Get tooltip height
+
+        if (isLeft) {
+          tooltip.style("left", (IMGWidth - tooltipWidth) + "px")
+        } else {
+          tooltip.style("left", (shipAreaWidth) + "px")
+        }
+
+      }
+
+      function TooltipFadeOut() {
+        tooltip.transition()
+          .duration(100)
+          .style("visibility", "hidden")
+          .style("opacity", 0);
+      }
+
+
+      leftCharacter.on("mouseover", function (event, d) {
+        TooltipFadeIn(true);
+      })
+        .on("mouseout", function (event, d) {
+          TooltipFadeOut()
+        })
+
+      rightCharacter.on("mouseover", function (event, d) {
+        TooltipFadeIn(false);
+      })
+        .on("mouseout", function (event, d) {
+          TooltipFadeOut()
+        })
+
+
+    }
+
+    requestCharacterData();
+
+
+    // ---------------- TOP 50 FANDOMS GRAPHS ---------------- //
     d3.csv("datasets/SLASH_topFandoms.csv").then(data => {
       data.forEach(d => {
         d.menPercent = +d.menPercent;
@@ -420,7 +928,148 @@
         });
       }
       renderFandoms();
+
+
+      // ---------------- TOP 20 SLASH GRAPHS ---------------- //
+      const svg = d3.select("#top-20");
+      const width = svg.attr("width");
+      const height = svg.attr("height");
+      const layer = svg.append("g");
+
+      const requestData = async () => {
+        //heart shape instead of circles? custom tags like in ao3 for context
+        const data = await d3.csv("datasets/INTRO_top20.csv", d3.autoType);
+
+        const customColors = [
+          "#ff3e41", "#ff8a43", "#ffeead", "#00c9a7", "#2e6ec5", "#DA70D6", "#DE3163", "#91bfca", "#88d8b0", "#86a1db", "#ffcc5c", "#b4dfff", "#ff829b", "#7e3dba", "#4c3a6e"];
+
+        const colorScale = d3.scaleOrdinal(customColors);
+
+        const radiusScale = d3.scaleSqrt()
+          .domain([0, d3.max(data, d => d.totalWorks)])
+          .range([5, 100]);
+
+        const simulation = d3.forceSimulation(data)
+          .force("repulse", d3.forceManyBody().strength(-50))
+          .force("center", d3.forceCenter(width / 2, height / 2))
+          .force("collision", d3.forceCollide().radius(d => radiusScale(d.totalWorks)))
+          .force("x", d3.forceX().x(d => width / 2))
+          .force("y", d3.forceY().y(d => height / 2))
+          .on("tick", render);
+
+        function render() {
+          let nodes = layer.selectAll("circle.node")
+            .data(data)
+            .join(
+              enter => enter.append("circle")
+                .attr("class", "node circle")
+                .attr("r", d => radiusScale(d.totalWorks))
+                .attr("fill", d => colorScale(d.fandom))
+                .attr("stroke", "black")
+                .attr("stroke-width", 1)
+            )
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y)
+            .on("click", (event, d) => {
+              d3.select("#popup")
+                .style("display", "block")
+                .html(`
+                ${d.rank}. <strong>${d.ship}</strong><br>
+                Fandom: ${d.fandom}<br>
+                Works: ${d.totalWorks}<br>
+                Genre: ${d.genre}<br>
+                Is Canon: ${d.isCanon}<br>
+                RPF: ${d.isRPF}<br>
+                <img src="datasets/shipImages/${d.totalWorks}.png" alt="${d.ship}" style="width:100%; height:auto;"><br>
+                ${d.quotes}<br>
+                
+                            `);
+            });
+
+          data.forEach((d, i) => d.rank = i + 1);
+          let rank = layer.selectAll(".rank")
+            .data(data)
+            .join("text")
+            .attr("class", "rank")
+            .text(d => d.rank)
+            .attr("x", d => d.x)
+            .attr("y", d => d.y - 15)
+            .style("font-size", "12px")
+            .style("text-anchor", "middle");
+
+          let label = layer.selectAll(".label")
+            .data(data)
+            .join("text")
+            .attr("class", "label")
+            .text(d => `${d.ship}`)
+            .attr("x", d => d.x)
+            .attr("y", d => d.y)
+            .style("font-size", "10px")
+            .style("text-anchor", "middle");
+
+          let label2 = layer.selectAll(".label2")
+            .data(data)
+            .join("text")
+            .attr("class", "label2")
+            .text(d => `(${d.totalWorks} works)`)
+            .attr("x", d => d.x)
+            .attr("y", d => d.y + 15)
+            .style("font-size", "8px")
+            .style("text-anchor", "middle");
+        }
+
+        function applyFilter() {
+          const selectedGenre = d3.select("#genre-select").property("value");
+          const selectedCanon = d3.select("#canon-select").property("value");
+          const selectedRPF = d3.select("#rpf-select").property("value");
+
+          layer.selectAll("circle.node")
+            .transition()
+            .duration(150)
+            .style("opacity", d => {
+              if (selectedGenre !== "All" && d.genre !== selectedGenre) return 0.3;
+              if (selectedCanon !== "All" && d.isCanon !== selectedCanon) return 0.3;
+              if (selectedRPF !== "All" && d.isRPF !== selectedRPF) return 0.3;
+              return 1;
+            });
+          layer.selectAll("text.rank, text.label, text.label2")
+            .transition()
+            .duration(150)
+            .style("opacity", d => {
+              if (selectedGenre !== "All" && d.genre !== selectedGenre) return 0.3;
+              if (selectedCanon !== "All" && d.isCanon !== selectedCanon) return 0.3;
+              if (selectedRPF !== "All" && d.isRPF !== selectedRPF) return 0.3;
+              return 1;
+            });
+        }
+
+        const genreSelect = d3.select("#genre-select");
+        const genres = Array.from(new Set(data.map(d => d.genre)));
+        genres.forEach(genre => {
+          genreSelect.append("option")
+            .attr("value", genre)
+            .text(genre);
+        });
+
+        d3.select("#genre-select").on("change", applyFilter);
+        d3.select("#canon-select").on("change", applyFilter);
+        d3.select("#rpf-select").on("change", applyFilter);
+
+        d3.select("#reset-button").on("click", function () {
+          d3.select("#genre-select").property("value", "All");
+          d3.select("#canon-select").property("value", "All");
+          d3.select("#rpf-select").property("value", "All");
+          applyFilter();
+        });
+        render();
+      }
+      requestData();
+
     });
+
+
+
+
 
   </script>
 

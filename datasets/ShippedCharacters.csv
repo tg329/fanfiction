@@ -1,36 +1,59 @@
-﻿Character,Fandom,Genre,Media
-Castiel,Supernatural,Fantasy,TV Series
-Dean Winchester,Supernatural,Fantasy,TV Series
-Draco Malfoy,Harry Potter - J.K. Rowling,Fantasy,Book Series
-Harry Potter,Harry Potter - J.K. Rowling,Fantasy,Book Series
-Sherlock Holmes,Sherlock,Crime,TV Series
-John Watson,Sherlock,Crime,TV Series
-Derek Hale,Teen Wolf,Fantasy,TV Series
-Stiles Stilinski,Teen Wolf,Fantasy,TV Series
-Aziraphale,Good Omens,Fantasy,TV Series
-Crowley,Good Omens,Fantasy,TV Series
-James 'Bucky' Barnes,Marvel Cinematic Universe,Superhero,Movies
-Steve Rogers,Marvel Cinematic Universe,Superhero,Movies
-Sirius Black,Harry Potter - J.K. Rowling,Fantasy,Book Series
-Remus Lupin,Harry Potter - J.K. Rowling,Fantasy,Book Series
-Bakugou Katsuki,Boku No Hero Academia,Superhero,Anime/Manga
-Midoriya Izuku,Boku No Hero Academia,Superhero,Anime/Manga
-Tony Stark,Marvel Cinematic Universe,Superhero,Movies
-Harry Styles,One Direction,Western Artist,Band
-Louis Tomlinson,One Direction,Western Artist,Band
-Lán Zhàn,Módào Zǔshī - Mòxiāng Tóngxiù,Fantasy,Anime/Novel
-Wèi Yīng,Módào Zǔshī - Mòxiāng Tóngxiù,Fantasy,Anime/Novel
-Jungkook,BTS,Kpop,Band
-V,BTS,Kpop,Band
-Adrien Agreste,Miraculous Ladybug,Superhero,Animated TV Series
-Marinette Dupain-Cheng,Miraculous Ladybug,Superhero,Animated TV Series
-Merlin,Merlin,Fantasy,TV Series
-Arthur Pendragon,Merlin,Fantasy,TV Series
-Keith,Voltron: Legendary Defender,Fantasy,Animated TV Series
-Lance,Voltron: Legendary Defender,Fantasy,Animated TV Series
-Dazai Osamu,Bungou Stray Dogs,Fantasy,Anime/Manga
-Nakahara Chuuya,Bungou Stray Dogs,Fantasy,Anime/Manga
-Sam Winchester,Supernatural,Fantasy,TV Series
-Kirishima Eijirou,Boku No Hero Academia,Superhero,Anime/Manga
-Magnus Bane,Mortal Instruments Series - Cassandra Clare,Fantasy,Book Series
-Alec Lightwood,Mortal Instruments Series - Cassandra Clare,Fantasy,Book Series
+﻿Character,Fandom,Media
+Castiel,Supernatural,TV Series
+Dean Winchester,Supernatural,TV Series
+Draco Malfoy,Harry Potter - J.K. Rowling,Book Series
+Harry Potter,Harry Potter - J.K. Rowling,Book Series
+Sherlock Holmes,Sherlock,TV Series
+John Watson,Sherlock,TV Series
+Derek Hale,Teen Wolf,TV Series
+Stiles Stilinski,Teen Wolf,TV Series
+Aziraphale,Good Omens,TV Series
+Crowley,Good Omens,TV Series
+James 'Bucky' Barnes,Marvel Cinematic Universe,Movies
+Steve Rogers,Marvel Cinematic Universe,Movies
+Sirius Black,Harry Potter - J.K. Rowling,Book Series
+Remus Lupin,Harry Potter - J.K. Rowling,Book Series
+Bakugou Katsuki,Boku No Hero Academia,Anime/Manga
+Midoriya Izuku,Boku No Hero Academia,Anime/Manga
+Tony Stark,Marvel Cinematic Universe,Movies
+Harry Styles,One Direction,Band
+Louis Tomlinson,One Direction,Band
+Lán Zhàn,Módào Zǔshī - Mòxiāng Tóngxiù,Anime/Novel
+Wèi Yīng,Módào Zǔshī - Mòxiāng Tóngxiù,Anime/Novel
+Jungkook,BTS,Band
+V,BTS,Band
+Adrien Agreste,Miraculous Ladybug,Animated TV Series
+Marinette Dupain-Cheng,Miraculous Ladybug,Animated TV Series
+Merlin,Merlin,TV Series
+Arthur Pendragon,Merlin,TV Series
+Keith,Voltron: Legendary Defender,Animated TV Series
+Lance,Voltron: Legendary Defender,Animated TV Series
+Dazai Osamu,Bungou Stray Dogs,Anime/Manga
+Nakahara Chuuya,Bungou Stray Dogs,Anime/Manga
+Sam Winchester,Supernatural,TV Series
+Kirishima Eijirou,Boku No Hero Academia,Anime/Manga
+Magnus Bane,Mortal Instruments Series - Cassandra Clare,Book Series
+Alec Lightwood,Mortal Instruments Series - Cassandra Clare,Book Series
+Hermione Granger,Harry Potter - J.K. Rowling,Book Series
+Rey,Star Wars,Movies
+Kylo Ren,Star Wars,Movies
+Ron Weasley,Harry Potter - J.K. Rowling,Book Series
+Pepper Potts,Marvel Cinematic Universe,Movies
+Kara Danvers,Supergirl,TV Series
+Lena Luthor,Supergirl,TV Series
+Emma Swan,Once Upon A Time,TV Series
+Regina Mills,Once Upon A Time,TV Series
+Amity Blight,The Owl House,Animated TV Series
+Luz Noceda,The Owl House,Animated TV Series
+Clarke Griffin,The 100,TV Series
+Lexa,The 100,TV Series
+Adora,She-Ra and the Princesses of Power,Animated TV Series
+Catra,She-Ra and the Princesses of Power,Animated TV Series
+Robin Buckley,Stranger Things,TV Series
+Nancy Wheeler,Stranger Things,TV Series
+Yang Xiao Long,RWBY,Anime/Manga
+Blake Belladonna,RWBY,Anime/Manga
+Korra,The Legend of Korra,Animated TV Series
+Asami Sato,The Legend of Korra,Animated TV Series
+Caitlyn,Arcane,Animated TV Series
+Vi,Arcane,Animated TV Series

@@ -19,7 +19,7 @@
       margin: 0px;
       font-size: 20px;
       text-align: center;
-      color: #970000;
+      color: #3c91e6;
     }
 
     .display-box {
@@ -27,7 +27,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 1%;
+      padding: 3%;
     }
 
     .tabs {
@@ -37,20 +37,19 @@
       width: 100%;
       /* match viz-container width */
       /* margin-bottom: 5px; */
-      /* gap: 2% */
+      /* gap: 1% */
     }
 
     .tab {
       flex: 1;
       text-align: center;
-      padding: 1.5%;
-      /* padding-top: 2%; */
+      padding: 1%;
+      padding-top: 1.5%;
 
-      background-color: #970000;
-      color: white;
-      /* border-top-left-radius: 22px;
-            border-top-right-radius: 22px; */
-      border: 2px solid #5b0000;
+      background-color: #ddd;
+      color: black;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
 
       border-bottom: none;
       box-sizing: border-box;
@@ -60,7 +59,7 @@
 
 
     .tab:hover {
-      background-color: #791111;
+      background-color: #afafaf;
 
       transform: scale(1.05);
       cursor: pointer;
@@ -68,15 +67,18 @@
     }
 
     .viz-container {
-      display:flex;
+      display: flex;
 
-      background-color: #333333;
+      background-color: #ddd;
       color: white;
       width: 94%;
       padding: 3%;
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
     }
 
     .content-container {
+      border-radius:3px;
       background-color: #f7f7f7;
       height: 40em;
       width: 100%;
@@ -86,9 +88,9 @@
 
     }
 
-    .fake-scroll {
+    /* .fake-scroll {
       height: 640px;
-    }
+    } */
 
     /*************** FANDOMS STYLE **************/
     .fan-container {
@@ -123,17 +125,17 @@
     }
 
     .fandom-title {
-      color: #5998d6;
+      color: #333333;
       font-size: 1rem;
       font-weight: bold;
     }
 
     .genre {
       font-size: 0.7rem;
-      color: #555;
+      color: #5998d6;
       margin-bottom: 0rem;
     }
-    
+
 
     /* bar animation */
     .percent-bar>div {
@@ -278,12 +280,15 @@
       </div>
     </div>
 
+    <!-- TOP FANDOMS -->
     <div class="viz-container">
+
+
+
       <div class="content-container">
+
         <div class="fan-container">
           <!-- <h2>Top 50 fandoms</h2> -->
-
-          <div class="filters" id="genre-filters"></div>
 
           <div class="legend">
             <div class="legend-item">
@@ -297,6 +302,8 @@
             </div>
           </div>
 
+          <div class="filters" id="genre-filters"></div>
+
           <div class="fandom-grid">
             <div class="column" id="col-1"></div>
             <div class="column" id="col-2"></div>
@@ -304,13 +311,16 @@
           </div>
         </div>
       </div>
-      <img class="fake-scroll" src="datasets/images/fake-scroll.png" alt="scroll">
+      <!-- <img class="fake-scroll" src="datasets/images/fake-scroll.png" alt="scroll"> -->
     </div>
   </div>
 
 
 
   <script>
+
+
+    // ---------------- TOP 50 FANDOMS GRAPHS ----------------
     d3.csv("datasets/SLASH_topFandoms.csv").then(data => {
       data.forEach(d => {
         d.menPercent = +d.menPercent;
@@ -337,13 +347,14 @@
 
       // GENRE COLORS
       const genreColors = {
-        "Superhero": "#facc15",
-        "Fantasy": "#8b5cf6",
+        "Superhero": "#ed4848",
+        "Fantasy": "#ad80d8",
         "Crime": "#f87171",
-        "Science Fiction": "#38bdf8",
-        "Video Game": "#34d399",
+        "Science Fiction": "#00c844",
+        "Video Game": "gray",
         "Sports": "#fb923c",
-        "Historical": "#e879f9"
+        "Historical": "#ffac1b",
+        "Slice of Life": "#abf293"
       };
 
       const filterContainer = d3.select("#genre-filters");

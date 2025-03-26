@@ -1,0 +1,117 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bar Chart with D3.js and Tooltip</title>
+
+  <!-- Load d3.js -->
+  <script src="https://d3js.org/d3.v7.js"></script>
+</head>
+
+<body>
+  <!-- Add 2 buttons -->
+  <button onclick="update(lgbtq_data)">LGBTQ Data</button>
+  <button onclick="update(transgender_data)">Transgender Data</button>
+
+  <!-- Create a div where the graph will take place -->
+  <div id="my_dataviz"></div>
+
+  <script>
+    // New data sets
+    var lgbtq_data = [
+      {response: "Yes", value: 81.4},
+      {response: "No", value: 10},
+      {response: "Unsure", value: 7.2},
+      {response: "No Response", value: 1.4}
+    ];
+
+    var transgender_data = [
+      {response: "Yes", value: 25.1},
+      {response: "No", value: 64},
+      {response: "Unsure", value: 8.3},
+      {response: "No Response", value: 2.6}
+    ];
+
+    // Set the dimensions and margins of the graph
+    var margin = {top: 30, right: 30, bottom: 70, left: 60},
+        width = 460 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    // Append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // X axis
+    var x = d3.scaleBand()
+      .range([ 0, width ])
+      .domain(lgbtq_data.map(function(d) { return d.response; })) // Set the domain to the first dataset
+      .padding(0.2);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, 100])  // Adjust domain to match the max percentage value
+      .range([ height, 0]);
+    svg.append("g")
+      .attr("class", "myYaxis")
+      .call(d3.axisLeft(y));
+
+    // Create a tooltip
+    var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .style("position", "absolute")
+      .style("background-color", "lightsteelblue")
+      .style("padding", "5px")
+      .style("border-radius", "5px")
+      .style("pointer-events", "none");
+
+    // A function that creates/updates the plot for a given variable:
+    function update(data) {
+
+      // Update the X scale domain based on the dataset
+      x.domain(data.map(function(d) { return d.response; }));
+
+      var u = svg.selectAll("rect")
+        .data(data);
+
+      // Create new bars or update existing ones
+      u.enter()
+        .append("rect")
+        .merge(u)
+        .attr("x", function(d) { return x(d.response); })
+        .attr("y", function(d) { return y(d.value); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.value); })
+        .attr("fill", "#69b3a2")
+      
+        // Add event handlers before transition
+        .on("mouseover", function(event, d) {
+          tooltip.transition().duration(200).style("opacity", 0.9);
+          tooltip.html(`Response: ${d.response}<br>Value: ${d.value}%`)
+            .style("left", `${event.pageX + 5}px`)
+            .style("top", `${event.pageY - 28}px`);
+        })
+        .on("mouseout", function() {
+          tooltip.transition().duration(200).style("opacity", 0);
+        })
+        
+        // Apply transition after events are bound
+        .transition()
+        .duration(1000)
+          .attr("y", function(d) { return y(d.value); })
+          .attr("height", function(d) { return height - y(d.value); });
+    }
+
+    // Initialize the plot with the LGBTQ data set
+    update(lgbtq_data);
+  </script>
+</body>
+</html>

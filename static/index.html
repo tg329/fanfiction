@@ -90,7 +90,7 @@
 
     .content-container {
       border-radius: 3px;
-      background-color: #f7f7f7;
+      background-color: #efefef;
       height: 40em;
       width: 100%;
       overflow-y: scroll;
@@ -597,9 +597,6 @@
         </div>
 
         <!-- ******************* SLASH SHIPS ******************* -->
-
-
-
         <div id="slash-ship-container" class="slash-ship-container">
           <div class="slash-filters">
             <label for="genre-select">Sort by Genre:</label>
@@ -731,8 +728,8 @@
       const characterData = await d3.csv("datasets/ShippedCharacters.csv")
 
       // populate dropdown menus
-      leftContent = d3.select("#leftBtn-Content")
-      rightContent = d3.select("#rightBtn-Content")
+      leftContent = d3.select("#leftBtn-content")
+      rightContent = d3.select("#rightBtn-content")
 
       characterNames = [];
       characterData.forEach((d, i) => {
@@ -742,7 +739,7 @@
 
       console.log(characterNames)
 
-      charcacterNames = characterNames.sort();
+      characterNames = characterNames.sort();
       characterNames.forEach((d, i) => {
 
         name = d;
@@ -805,7 +802,7 @@
 
       leftBtn = d3.select("#leftBtn").text(leftCharacterName)
       rightBtn = d3.select("#rightBtn").text(rightCharacterName)
-      randomBtn = d3.select("#randomBtn")
+      randomBtn = d3.select("#RandomBtn");
       ao3Btn = d3.select('#Ao3Btn')
 
       // Transition character image to slide in from left or right

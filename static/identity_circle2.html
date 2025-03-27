@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  circle_svg888 {
+    width: 100%;
+    height: 100%;
+  }
+
+  path.slice888 {
+    stroke-width: 2px;
+    transition: transform 0.3s ease;
+  }
+
+  polyline888 {
+    opacity: 0.5;
+    stroke: #CC2936;
+    stroke-width: 3px;
+    fill: none;
+  }
+
+  .tooltip888 {
+    position: absolute;
+    padding: 5px;
+    background-color: #EEABC4;
+    color: black;
+    border-radius: 5px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .chart-container {
+    display: inline-block;
+    width: 45%;
+    margin-right: 5%;
+    text-align: center;
+  }
+
+  #circle_charts888_left,
+  #circle_charts888_right {
+    width: 100%;
+    height: 100%;
+  }
+
+  #title888 {
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+
+  /* Style for the containers */
+  #chart-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 50px;
+  }
+
+  .chart-container:last-child {
+    margin-right: 0;
+  }
+</style>
+
+<body>
+
+  <div id="chart-wrapper">
+    <!-- Left chart container -->
+    <div class="chart-container">
+      <h2 id="title888_left">Default Title for LGBTQ+</h2>
+      <div id="circle_charts888_left"></div>
+    </div>
+    <!-- Right chart container -->
+    <div class="chart-container">
+      <h2 id="title888_right">Default Title for Transgender</h2>
+      <div id="circle_charts888_right"></div>
+    </div>
+  </div>
+
+  <div class="tooltip888" id="tooltip888"></div>
+
+  <script src="https://d3js.org/d3.v7.js"></script>
+
+  <script>
+    const width = 450;
+    const height = 450;
+    const margin = 40;
+    const radius = Math.min(width, height) / 2 - margin;
+
+    const color888 = d3.scaleOrdinal()
+      .domain(["Yes", "No", "Unsure", "No Response"])
+      .range(["#08415C", "#6B818C", "#F1BF98", "#EEE5E9"]);
+
+    const lgbtq_data888 = [
+      {response: "No", value: 10},
+      {response: "Unsure", value: 7.2},
+      {response: "No Response", value: 1.4},
+      {response: "Yes", value: 81.4}
+    ];
+
+    const transgender_data888 = [
+      {response: "Yes", value: 25.1},
+      {response: "No Response", value: 2.6},
+      {response: "Unsure", value: 8.3},
+      {response: "No", value: 64}
+    ];
+
+    const pie888 = d3.pie()
+      .value(function(d) { return d.value; })
+      .sort(null);
+
+    const arc888 = d3.arc()
+      .innerRadius(radius * 0.5)  // donut hole size
+      .outerRadius(radius * 0.8); // outer radius
+
+    const outerArc = d3.arc()
+      .innerRadius(radius * 0.9)
+      .outerRadius(radius * 0.9); // label arc for positioning
+
+    const tooltip888 = d3.select("#tooltip888");
+
+    function updateData888(data888, title888, chartId) {
+      // Update the title based on the selected chart
+      d3.select(`#title888_${chartId}`).text(title888);
+
+      // Select the appropriate chart container based on chartId
+      const chartContainer = d3.select(`#circle_charts888_${chartId}`);
+
+      const data_ready888 = pie888(data888);
+
+      // Clear the previous SVG content
+      chartContainer.selectAll("*").remove(); 
+
+      const svg888 = chartContainer.append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+      svg888.append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", radius)
+        .style("fill", "white")
+        .style("stroke", "none");
+
+      // Draw the slices
+      const u888 = svg888.selectAll('path.slice888')
+        .data(data_ready888);
+
+      u888.enter()
+        .append('path')
+        .merge(u888)
+        .attr('d', arc888)
+        .attr('fill', function(d) { return color888(d.data.response); })
+        .attr("stroke", "white")
+        .style("stroke-width", "2px")
+        .style("opacity", 1)
+        .on("mouseover", function(event, d) {
+          tooltip888.transition().duration(200).style("opacity", 1);
+          tooltip888.html(d.data.response + ": " + d.data.value + "%")
+            .style("left", (event.pageX + 5) + "px")
+            .style("top", (event.pageY - 28) + "px");
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
+        })
+        .on("mouseout", function(d) {
+          tooltip888.transition().duration(200).style("opacity", 0);
+
+          d3.select(this).transition().duration(300).attr("transform", "scale(1)");
+        });
+
+      // Add the polylines between chart and labels:
+      svg888.selectAll('allPolylines')
+        .data(data_ready888)
+        .join('polyline')
+        .attr("stroke", "black")
+        .style("fill", "none")
+        .attr("stroke-width", 1)
+        .attr('points', function(d) {
+          const posA = arc888.centroid(d); // line insertion in the slice
+          const posB = outerArc.centroid(d); // line break: we use the other arc generator that has been built only for that
+          const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2; // determine if the label goes left or right
+          posB[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // position label to left or right
+          return [posA, posB];
+        });
+
+      // Add the labels outside the pie chart:
+      svg888.selectAll('allLabels')
+        .data(data_ready888)
+        .join('text')
+        .text(d => d.data.response)
+        .attr('transform', function(d) {
+          const pos = outerArc.centroid(d);
+          const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+          pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
+          return `translate(${pos})`;
+        })
+        .style('text-anchor', function(d) {
+          const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+          return (midangle < Math.PI ? 'start' : 'end');
+        });
+    }
+
+    // Initialize the page with the LGBTQ+ chart
+    updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?', 'left');
+    updateData888(transgender_data888, 'Do you identify as transgender?', 'right');
+  </script>
+
+</body>
+</html>

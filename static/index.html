@@ -535,7 +535,7 @@
 
     #chart-wrapper {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
     }
   
 
@@ -1125,8 +1125,8 @@
 
 
     // ---------------- GENDER IDENTITY GRAPHS---------------- //
-    var width888 = 960;
-  var height888 = 500;
+    var width888 = 672; //960
+  var height888 = 350; //500
   var radius888 = Math.min(width888, height888) / 2;
 
   var color888 = d3.scaleOrdinal()
@@ -1190,7 +1190,7 @@
               tooltip888.transition().duration(200).style("opacity", 1);
               tooltip888.html(d.data.response + ": " + d.data.value + "%")
                   .style("left", (event.pageX + 5) + "px")
-                  .style("top", (event.pageY - 28) + "px");
+                  .style("top", (event.pageY - 78) + "px");
 
               d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
           })

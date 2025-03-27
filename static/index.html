@@ -781,7 +781,7 @@
         
             <div class = "bar-container">
     
-              <svg id="barchart" height="300" width="1200"> </svg>
+              <svg id="barchart" height="300" width="1500"> </svg>
               <div id="bar-tooltip" class="bar-tooltip"></div>
   
             </div>
@@ -1220,7 +1220,7 @@
     const barsvg = d3.select("#barchart");
     const barWidth = barsvg.attr("width");
     const barHeight = barsvg.attr("height");
-    const barMargin = {top: 20, right: 60, bottom: 30, left: 100};
+    const barMargin = {top: 20, right: 260, bottom: 30, left: 350};
 
     const barAreaWidth = barWidth - barMargin.left - barMargin.right;
     const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
@@ -1274,6 +1274,32 @@
         .attr("class", "y gridlines")
         .attr("transform",`translate(${-10},${0})`)
         .call(leftGridlines);
+
+        // axis labels
+
+        barsvg.append('text')
+                .attr('class', 'y label')
+                .attr('text-anchor', 'middle')
+                .attr('x', barMargin.left / 2)
+                .attr('y', barHeight/2)
+                .attr('dy', "-1em")
+                .text('Number of Ships/Fandoms')
+
+        barsvg.append('text')
+                .attr('class', 'y label')
+                .attr('text-anchor', 'middle')
+                .attr('x', barMargin.left / 2)
+                .attr('y', barHeight/2)
+                .attr('dy', "0")
+                .text('on Ao3 with')
+
+        barsvg.append('text')
+                .attr('class', 'y label')
+                .attr('text-anchor', 'middle')
+                .attr('x', barMargin.left / 2)
+                .attr('y', barHeight/2)
+                .attr('dy', "1em")
+                .text('1000+ Fanfictions')
 
         // X axis: Years
 
@@ -1370,6 +1396,17 @@
         }).on("mouseout", function(event, d) {
             undoHighlightBar(event,d)
         })
+
+
+        //NA for 2018
+
+        barChartArea.append('text')
+            .attr('x', yearScale(2018) + yearScale.bandwidth()/2)
+            .attr('y', countScale(220))
+            .attr("text-anchor", "middle")
+            .attr('font-weight', 'bold')
+            .attr('font-size', 20)
+            .text("N/A")
 
         }
 

@@ -97,7 +97,7 @@
       overflow-y: scroll;
       position: relative;
       box-sizing: border-box;
-  
+
     }
 
     .slash-content-container {
@@ -137,7 +137,7 @@
       color: black;
       padding: 30px;
       padding-top: 10px;
-      padding-bottom:10px;
+      padding-bottom: 10px;
       border-radius: 16px;
       margin: 30px;
       margin-bottom: 44px;
@@ -1191,7 +1191,6 @@
       });
 
       const topFandoms = data
-        .sort((a, b) => d3.descending(a.wnbPercent, b.wnbPercent))
         .slice(0, 50)
         .map((d, i) => ({ ...d, rank: i + 1 }));
 

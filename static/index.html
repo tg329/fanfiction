@@ -38,7 +38,6 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 2%;
     }
 
     .tabs {
@@ -49,13 +48,13 @@
       /* match viz-container width */
       /* margin-bottom: 5px; */
       /* gap: 1% */
+      margin-top:20px;
     }
 
     .tab {
       flex: 1;
       text-align: center;
       padding: 1%;
-      padding-top: 1.5%;
 
       background-color: #ddd;
       color: black;
@@ -72,8 +71,7 @@
     .tab:hover {
       background-color: #aaa5a5;
       color: white;
-
-      transform: scale(1.02);
+      transform: scale(1.03);
       cursor: pointer;
       z-index: 1;
     }
@@ -90,9 +88,8 @@
     }
 
     .content-container {
-      border-radius: 3px;
+      border-radius: 6px;
       background-color: #efefef;
-      height: 40em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
@@ -101,7 +98,7 @@
     }
 
     .slash-content-container {
-      border-radius: 3px;
+      border-radius: 6px;
       background-color: #f7f7f7;
       height: 40em;
       width: 100%;
@@ -139,8 +136,7 @@
       padding-top: 10px;
       padding-bottom: 10px;
       border-radius: 16px;
-      margin: 30px;
-      margin-bottom: 44px;
+      margin: 18px;
     }
 
     .column {
@@ -214,7 +210,7 @@
 
     .percent-bar {
       height: 20px;
-      border-radius: 5px;
+      border-radius: 6px;
       overflow: hidden;
       display: flex;
       margin-top: 0.5rem;
@@ -255,7 +251,7 @@
     .legend-color {
       width: 16px;
       height: 16px;
-      border-radius: 3px;
+      border-radius: 10px;
       display: inline-block;
     }
 
@@ -284,14 +280,14 @@
       padding: 0.4rem 0.75rem;
       font-size: 0.85rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       background-color: #ddd;
       cursor: pointer;
       transition: background-color 0.2s ease-in-out;
     }
 
     .filter-btn.active {
-      background-color: #3b82f6;
+      background-color: #970000;
       color: white;
     }
 
@@ -301,7 +297,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 100px;
+      margin-top: 50px;
     }
 
     .button-container {
@@ -324,8 +320,7 @@
       padding: 0px;
       width: 150px;
       background-color: #ddd;
-      border-radius: 10px;
-      margin: 4px;
+      border-radius: 6px;
       border: none;
     }
 
@@ -340,38 +335,20 @@
       padding: 0px;
     }
 
-    #RandomBtn {
-      background-color: #970000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0px;
-      color: white;
+    #RandomBtn, #Ao3Btn  {
       text-transform: lowercase;
-    }
-
-    #RandomBtn:hover {
-      background-color: #680000;
-      transition: background-color 0.3s ease-in-out;
-    }
-
-    /* #970000 */
-
-    #Ao3Btn {
+      padding: 12px 24px;
       background-color: #970000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0px;
-      padding: 0px;
       color: white;
-      text-transform: lowercase;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
 
     }
 
-    #Ao3Btn:hover {
-      background-color: #680000;
-      transition: background-color 0.3s ease-in-out;
+    #RandomBtn:hover, #Ao3Btn:hover { 
+      transform: scale(1.03);
     }
 
     #rightBtn {
@@ -392,13 +369,9 @@
 
     /* The container <div> - needed to position the dropdown content */
     .dropdown {
-      background-color: #f1f1f1;
+      background-color: #ffffff;
       padding: 40px;
-      position: relative;
-      display: inline-block;
     }
-
-
 
     .dropdown-content {
       display: none;
@@ -441,14 +414,13 @@
     }
 
     .ship-button {
-      padding: 0px 50px;
       cursor: pointer;
     }
 
     @keyframes bounce {
       from {
         translate: 0 2vh;
-        scale: 1 102%;
+        scale: 1 101%;
       }
 
       to {
@@ -459,7 +431,7 @@
 
     @keyframes text-grow {
       from {
-        font-size: 30px;
+        font-size: 40px;
       }
 
       to {
@@ -469,6 +441,7 @@
 
     .ship-character {
       width: 400px;
+      margin-top:500px;
       animation-name: bounce;
       animation-duration: 1s;
       animation-direction: alternate;
@@ -480,38 +453,37 @@
     }
 
     .heart {
-
-      /* margin-left:  */
       animation-name: text-grow;
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
 
       text-anchor: middle;
-
       fill: #AA0033
     }
 
     .tooltip {
       pointer-events: none;
-      visibility: hidden;
+      visibility: visible;
       position: absolute;
       color: black;
       background: rgba(255, 255, 255, 0.8);
       z-index: 9999;
+      opacity: 1;
+      top: 200px;
 
     }
 
 
     /******* GENDER IDENTITY CSS ********/
     circle_svg888 {
-      width: 120%;
+      width: 100%;
       height: 100%;
     }
 
     path.slice888 {
-      stroke-width: 2px;
-      transition: transform 0.3s ease;
+      stroke-width: 1px;
+      transition: transform 0.5s ease;
     }
 
     polyline {
@@ -526,15 +498,33 @@
       padding: 5px;
       background-color: #EEABC4;
       color: black;
-      border-radius: 5px;
+      border-radius: 6px;
       pointer-events: none;
       opacity: 0;
     }
 
+    #gender{
+      padding: 12px 24px;
+      background-color: #970000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+      margin:20px;
+      width:300px;
+      height:50px;
+    }
+
+    #gender:hover {
+      transform: scale(1.03);
+    }
+  
+
     /******* SLASH CSS********/
 
     .circle {
-      fill-opacity: 0.8;
+      fill-opacity: 0.75;
       transition: fill-opacity 0.3s, fill 0.3s;
     }
 
@@ -552,7 +542,7 @@
       padding: 15px;
       font-size: 14px;
       width: 500px;
-      max-height: 550px;
+      max-height: 540px;
       border-radius: 5px;
       overflow-y: auto;
       line-height: 30px;
@@ -560,7 +550,7 @@
 
     #popup img {
       max-height: 300px;
-      margin-top: 20px;
+      margin-top: 10px;
       width: 100%;
       height: auto;
       border-radius: 5px;
@@ -607,6 +597,8 @@
       align-items: center;
       gap: 1em;
     }
+
+
   </style>
 </head>
 
@@ -624,11 +616,11 @@
       </div>
 
       <div class="tab" id="tab3">
-        slash ships
+        top 20 ships
       </div>
 
       <div class="tab" id="tab4">
-        gender identity
+        ao3 author's gender identity
       </div>
     </div>
 
@@ -637,20 +629,23 @@
       <!-- ******************* SHIP RANDOMIZER ******************* -->
 
       <div class="content-container">
-
+        
         <img alt="curtain" id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
           style="position: absolute; background-color: #ffffff00;pointer-events: none;">
         <img alt="curtain" id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
           style="position: absolute; background-color: #ffffff00; transform: scaleX(-1); right: 0;pointer-events: none;">
-        <div id="ship-random-container">
+        
+          <div id="ship-random-container">
 
+            
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
             </svg>
-            <div id="tooltip" class="tooltip"></div>
+            <div id="left-tooltip" class="tooltip"></div>
+            <div id="right-tooltip" class="tooltip"></div>
           </div>
           <div id="button-container" class="ship-button-container">
-            <button id="RandomBtn" class="ship-button">random</button>
+            <button id="RandomBtn" class="ship-button">randomize</button>
 
             <div class="dropdown">
               <button id="leftBtn" class="ship-button">Dropdown</button>
@@ -666,29 +661,39 @@
               </div>
             </div>
 
-            <button id="Ao3Btn" class="ship-button">fanfics</button>
+            <button id="Ao3Btn" class="ship-button">search on ao3</button>
 
           </div>
-          <p>AO3 (Archive of Our Own) is a
-            community-driven site where fans write, read, and share stories about their favorite characters, ships
-            (character pairings), and
-            worlds. As a site built by fans, for fans, AO3 offers everything from heart-wrenching
-            romance to alternate universes you’d never see in the original works. </p>
-
-          <p>
-            Fanfiction itself is a phenomenon that allows people to expand on the
-            worlds they love, fix disappointing endings, and explore character dynamics.
-            Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
-            communities and
-            inspiring new generations of writers. </p>
+          <div class="fan-descr">
+            <p>Ao3 (Archive of Our Own) is a
+              community-driven site where fans write, read, and share stories about their favorite characters, ships
+              (character pairings), and
+              worlds. As a site built by fans, for fans, AO3 offers everything from heart-wrenching
+              romance to alternate universes you’d never see in the original works. </p>
+  
+            <p>
+              Fanfiction itself is a phenomenon that allows people to expand on the
+              worlds they love and explore character dynamics.
+              Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
+              communities and
+              inspiring new generations of writers. </p>
+          </div>
         </div>
+      
 
         <!-- ******************* GENDER IDENTITY ******************* -->
         <div id="gender-identity-container" class="gender-identity-container">
-          <button onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
+          <div class="fan-descr">
+            <p> With all these fanfictions and ships, we want to see the writers and authors behind them!
+              Click the tab to see the proportion of authors that identify as a member of the LGBTQ+ community 
+              or explore the proportion of authors that identify as a member of the transgender community. 
+              Hover over each pie slice to see exact percentages!
+            </p>
+          </div>
+          <button id = "gender" onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
             Do you identify as LGBTQ+ in any form?
           </button>
-          <button onclick="updateData888(transgender_data888, 'Do you identify as transgender?')">
+          <button id = "gender" onclick="updateData888(transgender_data888, 'Do you identify as transgender?')">
             Do you identify as transgender?
           </button>
 
@@ -698,6 +703,12 @@
 
         <!-- ******************* SLASH SHIPS ******************* -->
         <div id="slash-ship-container" class="slash-ship-container">
+          <div class="fan-descr">
+            <p>Here is a visualization of the top 20 most popular ships on Ao3, colored by fandom.
+              Click on each circle to view more information about the pairing!
+            </p>
+            <p>Interestingly, on this list, there is only 1 straight ship (Adrien/Marinette) and 1 platonic relationship (Peter Parker & Tony Stark).</p>
+          </div>
           <div class="slash-filters">
             <label for="genre-select">Sort by Genre:</label>
             <select id="genre-select" class="dropdown">
@@ -832,7 +843,7 @@
     const shipsvg = d3.select("#ship-visualizer");
     const shipWidth = shipsvg.attr("width");
     const shipHeight = shipsvg.attr('height');
-    const shipMargin = { top: 30, right: 10, bottom: 10, left: 10 };
+    const shipMargin = { top: 0, right: 10, bottom: 0, left: 10 };
 
     const shipAreaWidth = shipWidth - shipMargin.left - shipMargin.right;
     const shipAreaHeight = shipHeight - shipMargin.top - shipMargin.bottom;
@@ -924,12 +935,27 @@
         .attr("y", 100)
         .text("<3")
 
+      // characterArea.append("c")
+      //   .attr("class", "fan descr")
+      //   .attr("x", shipWidth / 2)
+      //   .attr("y", 100)
+      //   .text("<3")
+      
+
+      
+
+
       // buttons
 
       leftBtn = d3.select("#leftBtn").text(leftCharacterName)
       rightBtn = d3.select("#rightBtn").text(rightCharacterName)
       randomBtn = d3.select("#RandomBtn");
       ao3Btn = d3.select('#Ao3Btn')
+
+      //tooltps
+      const leftTooltip = d3.select("#left-tooltip");
+      const rightTooltip = d3.select("#right-tooltip");
+
 
       // Transition character image to slide in from left or right
       function SlideIn(left, right) {
@@ -939,6 +965,8 @@
             .delay(100)
             .duration(1000)
             .attr("x", shipWidth / 2 - IMGWidth)
+            .on("end", function () {
+              TooltipFadeIn(true)})
         }
 
         if (right) {
@@ -946,6 +974,8 @@
             .delay(100)
             .duration(1000)
             .attr("x", shipWidth / 2)
+            .on("end", function () {
+              TooltipFadeIn(false)})
         }
 
       }
@@ -953,6 +983,9 @@
       // transition character image to slide out, then slide back in with new image
       function QuickChange(left, right) {
         if (left) {
+
+          TooltipFadeOut(left);
+
           leftCharacter.transition()
             .delay(100)
             .duration(800)
@@ -966,6 +999,9 @@
         }
 
         if (right) {
+
+          TooltipFadeOut(false);
+
           rightCharacter.transition()
             .delay(100)
             .duration(800)
@@ -1002,15 +1038,11 @@
       })
 
       // add tooltips
-      const tooltip = d3.select("#tooltip");
-
-
-
-      console.log(characterData.find(d => d.Character === "Vi"))
-
+      
       function TooltipFadeIn(isLeft) {
 
-        name = isLeft ? leftCharacterName : rightCharacterName
+        name = isLeft ? leftCharacterName : rightCharacterName;
+        tooltip = isLeft ? leftTooltip : rightTooltip;
         let character = characterData.find(d => d.Character === name)
 
         console.log(character)
@@ -1021,9 +1053,10 @@
           .style("opacity", 1);
 
         tooltip.html(`
-                    <strong>Fandom: </strong> ${character.Fandom}
+                    <strong>${name}</strong>
+                    <br><strong>Fandom: </strong> ${character.Fandom}
                     <br>(${character.Media})`)
-          .style("top", "200px");
+          // .style("top", "200px");
 
         const tooltipWidth = tooltip.node().offsetWidth;   // Get tooltip width
         const tooltipHeight = tooltip.node().offsetHeight; // Get tooltip height
@@ -1031,12 +1064,13 @@
         if (isLeft) {
           tooltip.style("left", (IMGWidth - tooltipWidth) + "px")
         } else {
-          tooltip.style("left", (shipAreaWidth) + "px")
+          tooltip.style("right", (IMGWidth - tooltipWidth) + "px")
         }
 
       }
 
-      function TooltipFadeOut() {
+      function TooltipFadeOut(isLeft) {
+        tooltip = isLeft ? leftTooltip : rightTooltip;
         tooltip.transition()
           .duration(100)
           .style("visibility", "hidden")
@@ -1047,16 +1081,16 @@
       leftCharacter.on("mouseover", function (event, d) {
         TooltipFadeIn(true);
       })
-        .on("mouseout", function (event, d) {
-          TooltipFadeOut()
-        })
+        // .on("mouseout", function (event, d) {
+        //   TooltipFadeOut()
+        // })
 
       rightCharacter.on("mouseover", function (event, d) {
         TooltipFadeIn(false);
       })
-        .on("mouseout", function (event, d) {
-          TooltipFadeOut()
-        })
+        // .on("mouseout", function (event, d) {
+        //   TooltipFadeOut()
+        // })
 
 
     }
@@ -1132,8 +1166,9 @@
         .on("mouseover", function (event, d) {
           tooltip888.transition().duration(200).style("opacity", 1);
           tooltip888.html(d.data.response + ": " + d.data.value + "%")
-            .style("left", (event.pageX + 5) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 98) + "px");
+
 
           d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
         })

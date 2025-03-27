@@ -43,6 +43,7 @@
     .tabs {
       display: flex;
       justify-content: space-between;
+      /* distributes tabs evenly */
       width: 100%;
       /* match viz-container width */
       /* margin-bottom: 5px; */
@@ -89,7 +90,6 @@
     .content-container {
       border-radius: 6px;
       background-color: #efefef;
-      height: 40em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
@@ -464,13 +464,11 @@
 
     .tooltip {
       pointer-events: none;
-      visibility: visible;
+      visibility: hidden;
       position: absolute;
       color: black;
       background: rgba(255, 255, 255, 0.8);
       z-index: 9999;
-      opacity: 1;
-      top: 200px;
 
     }
 
@@ -537,6 +535,8 @@
         display: flex;
         flex-direction: column;
     }
+
+
   
 
     /******* SLASH CSS********/
@@ -647,20 +647,16 @@
       <!-- ******************* SHIP RANDOMIZER ******************* -->
 
       <div class="content-container">
-        
         <img alt="curtain" id="leftCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
           style="position: absolute; background-color: #ffffff00;pointer-events: none;">
         <img alt="curtain" id="rightCurtain" src="datasets/images/curtain-left.png" width="300" height="600"
           style="position: absolute; background-color: #ffffff00; transform: scaleX(-1); right: 0;pointer-events: none;">
-        
-          <div id="ship-random-container">
+        <div id="ship-random-container">
 
-            
           <div id="ship-container" class="ship-container">
             <svg id="ship-visualizer" height="400" width="1000">
             </svg>
-            <div id="left-tooltip" class="tooltip"></div>
-            <div id="right-tooltip" class="tooltip"></div>
+            <div id="tooltip" class="tooltip"></div>
           </div>
           <div id="button-container" class="ship-button-container">
             <button id="RandomBtn" class="ship-button">randomize</button>
@@ -726,6 +722,7 @@
       
           <div class="tooltip888" id="tooltip888"></div>
       </div>
+      
 
         <!-- ******************* SLASH SHIPS ******************* -->
         <div id="slash-ship-container" class="slash-ship-container">
@@ -733,7 +730,6 @@
             <p>Here is a visualization of the top 20 most popular ships on Ao3, colored by fandom.
               Click on each circle to view more information about the pairing!
             </p>
-            <p>Interestingly, on this list, there is only 1 straight ship (Adrien/Marinette) and 1 platonic relationship (Peter Parker & Tony Stark).</p>
           </div>
           <div class="slash-filters">
             <label for="genre-select">Sort by Genre:</label>
@@ -961,27 +957,12 @@
         .attr("y", 100)
         .text("<3")
 
-      // characterArea.append("c")
-      //   .attr("class", "fan descr")
-      //   .attr("x", shipWidth / 2)
-      //   .attr("y", 100)
-      //   .text("<3")
-      
-
-      
-
-
       // buttons
 
       leftBtn = d3.select("#leftBtn").text(leftCharacterName)
       rightBtn = d3.select("#rightBtn").text(rightCharacterName)
       randomBtn = d3.select("#RandomBtn");
       ao3Btn = d3.select('#Ao3Btn')
-
-      //tooltps
-      const leftTooltip = d3.select("#left-tooltip");
-      const rightTooltip = d3.select("#right-tooltip");
-
 
       // Transition character image to slide in from left or right
       function SlideIn(left, right) {
@@ -991,8 +972,6 @@
             .delay(100)
             .duration(1000)
             .attr("x", shipWidth / 2 - IMGWidth)
-            .on("end", function () {
-              TooltipFadeIn(true)})
         }
 
         if (right) {
@@ -1000,8 +979,6 @@
             .delay(100)
             .duration(1000)
             .attr("x", shipWidth / 2)
-            .on("end", function () {
-              TooltipFadeIn(false)})
         }
 
       }
@@ -1009,9 +986,6 @@
       // transition character image to slide out, then slide back in with new image
       function QuickChange(left, right) {
         if (left) {
-
-          TooltipFadeOut(left);
-
           leftCharacter.transition()
             .delay(100)
             .duration(800)
@@ -1025,9 +999,6 @@
         }
 
         if (right) {
-
-          TooltipFadeOut(false);
-
           rightCharacter.transition()
             .delay(100)
             .duration(800)
@@ -1064,11 +1035,15 @@
       })
 
       // add tooltips
-      
+      const tooltip = d3.select("#tooltip");
+
+
+
+      console.log(characterData.find(d => d.Character === "Vi"))
+
       function TooltipFadeIn(isLeft) {
 
-        name = isLeft ? leftCharacterName : rightCharacterName;
-        tooltip = isLeft ? leftTooltip : rightTooltip;
+        name = isLeft ? leftCharacterName : rightCharacterName
         let character = characterData.find(d => d.Character === name)
 
         console.log(character)
@@ -1079,10 +1054,9 @@
           .style("opacity", 1);
 
         tooltip.html(`
-                    <strong>${name}</strong>
-                    <br><strong>Fandom: </strong> ${character.Fandom}
+                    <strong>Fandom: </strong> ${character.Fandom}
                     <br>(${character.Media})`)
-          // .style("top", "200px");
+          .style("top", "200px");
 
         const tooltipWidth = tooltip.node().offsetWidth;   // Get tooltip width
         const tooltipHeight = tooltip.node().offsetHeight; // Get tooltip height
@@ -1090,13 +1064,12 @@
         if (isLeft) {
           tooltip.style("left", (IMGWidth - tooltipWidth) + "px")
         } else {
-          tooltip.style("right", (IMGWidth - tooltipWidth) + "px")
+          tooltip.style("left", (shipAreaWidth) + "px")
         }
 
       }
 
-      function TooltipFadeOut(isLeft) {
-        tooltip = isLeft ? leftTooltip : rightTooltip;
+      function TooltipFadeOut() {
         tooltip.transition()
           .duration(100)
           .style("visibility", "hidden")
@@ -1107,16 +1080,16 @@
       leftCharacter.on("mouseover", function (event, d) {
         TooltipFadeIn(true);
       })
-        // .on("mouseout", function (event, d) {
-        //   TooltipFadeOut()
-        // })
+        .on("mouseout", function (event, d) {
+          TooltipFadeOut()
+        })
 
       rightCharacter.on("mouseover", function (event, d) {
         TooltipFadeIn(false);
       })
-        // .on("mouseout", function (event, d) {
-        //   TooltipFadeOut()
-        // })
+        .on("mouseout", function (event, d) {
+          TooltipFadeOut()
+        })
 
 
     }
@@ -1234,7 +1207,6 @@
   updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?', 'left');
   updateData888(transgender_data888, 'Do you identify as transgender?', 'right');
 
-
     // ---------------- TOP 50 FANDOMS GRAPHS ---------------- //
     d3.csv("datasets/SLASH_topFandoms.csv").then(data => {
       data.forEach(d => {
@@ -1245,6 +1217,7 @@
       });
 
       const topFandoms = data
+        .sort((a, b) => d3.descending(a.wnbPercent, b.wnbPercent))
         .slice(0, 50)
         .map((d, i) => ({ ...d, rank: i + 1 }));
 

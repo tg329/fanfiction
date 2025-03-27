@@ -492,10 +492,6 @@
         visibility: hidden;
         position: absolute;
         background: rgba(255, 255, 255, 0.8);
-        /* direction: rtl;
-        text-align: right; */
-        /* offset-anchor: end; */
-        /* lazy way to make sure tooltip is always on top */
         z-index: 9999;
 
     }
@@ -504,8 +500,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 10px;
+      margin-top: -30px;
       /* background: rgb(195, 195, 195); */
+    }
+
+    .bar {
+      stroke: black;
+      stroke-width: 2;
+    }
+
+    .legend-color.bar-fandom {
+      background: #AA0033;
     }
 
 
@@ -730,16 +735,22 @@
               communities and
               inspiring new generations of writers. </p>
 
-              <div class = "bar-container">
-                <svg id="barchart" height="300" width="1000" style="background: rgb(195, 195, 195);"> </svg>
-                <div id="bar-tooltip" class="bar-tooltip"></div>
-    
+            <div class="legend">
+              <div class="legend-item">
+                <span class="legend-color bar-men"></span> Unique Ships with +1000 fanfics
               </div>
-          </div>
-
-          
-
+              <div class="legend-item">
+                <span class="legend-color bar-fandom"></span> Unique Fandoms with +1000 fanfics
+              </div>
+            </div>
+        
+            <div class = "bar-container">
+    
+              <svg id="barchart" height="300" width="1200"> </svg>
+              <div id="bar-tooltip" class="bar-tooltip"></div>
   
+            </div>
+          </div>
 
         </div>
       
@@ -1167,6 +1178,167 @@
     }
 
     requestCharacterData();
+
+
+    // --------------- BAR CHART TOP STATS ------------------- //
+
+    const barsvg = d3.select("#barchart");
+    const barWidth = barsvg.attr("width");
+    const barHeight = barsvg.attr("height");
+    const barMargin = {top: 20, right: 60, bottom: 30, left: 100};
+
+    const barAreaWidth = barWidth - barMargin.left - barMargin.right;
+    const barAreaHeight = barHeight - barMargin.top - barMargin.bottom;
+
+    const barChartArea = barsvg.append("g")
+        .attr("transform", "translate("+(barMargin.left)+","+barMargin.top+")");
+
+    const annotations = barChartArea.append('g')
+
+    const legend = barsvg.append("g")
+        .attr("transform", "translate("+(barMargin.left + 30)+","+(barMargin.top + 30)+")");
+
+
+  const requestBarChartData = async function() {
+
+        topStats = await d3.csv("datasets/INTRO_topStats.csv", d3.autoType)
+        console.log(topStats)
+
+        years = []
+
+        topStats.forEach(d => {
+            years.push(d.year);
+        });
+
+
+        // Y axis: Counts
+
+        shipsExtent = d3.extent(topStats, d=>d.uniqueShips)
+        fandomsExtent = d3.extent(topStats, d=>d.uniqueFandoms)
+
+        const countExtent = [d3.min([shipsExtent[0], fandomsExtent[0]]),
+                            d3.max([shipsExtent[1], fandomsExtent[1]])]
+
+        const countScale = d3.scaleLinear()
+            .domain(countExtent)
+            .range([barAreaHeight, 0])
+
+        let leftAxis = d3.axisLeft(countScale)
+            .tickFormat(d3.format("~f")) // no commas
+
+        let leftGridlines = d3.axisLeft(countScale)
+                    .tickSize(-barAreaWidth+10)
+                    .tickFormat("")
+
+        annotations.append("g")
+            .attr("class", "y axis")
+            .attr("transform",`translate(${-10},${0})`)
+            .call(leftAxis)
+
+        annotations.append("g")
+        .attr("class", "y gridlines")
+        .attr("transform",`translate(${-10},${0})`)
+        .call(leftGridlines);
+
+        // X axis: Years
+
+        const yearScale = d3.scaleBand()
+            .domain(years)
+            .range([0, barAreaWidth])
+            .padding(0.1);
+
+        let bottomAxis = d3.axisBottom(yearScale)
+            .tickFormat(d3.format("~f")) // no commas
+
+        annotations.append('g')
+            .attr('class', 'x axis')
+            .attr("transform",`translate(0,${barAreaHeight})`)
+            .call(bottomAxis);
+
+
+        // draw bars
+
+
+        // UNIQUE SHIPS
+        uniqueShips = barChartArea.selectAll('rect.ship').data(topStats, d => d['year'])
+            .join('rect')
+            .attr('class', 'bar')
+            .attr('fill', "#3b82f6")
+            .attr('rx', 4)
+            .attr('x', d => yearScale(d.year))
+            .attr('y', d => countScale(d.uniqueShips))
+            .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueShips))
+            .attr('width', yearScale.bandwidth())
+            .attr("stroke-opacity", 0)
+
+        // UNIQUE FANDOMS
+        uniqueFandoms = barChartArea.selectAll('rect.fandom').data(topStats, d => d['year'])
+            .join('rect')
+            .attr('class', 'bar') 
+            .attr('fill', '#AA0033')
+            .attr('x', d => yearScale(d.year))
+            .attr('y', d => countScale(d.uniqueFandoms))
+            .attr('height', d => countScale(countExtent[0]) - countScale(d.uniqueFandoms))
+            .attr('width', yearScale.bandwidth())
+            .attr('year', d => d.year)
+            .attr("stroke-opacity", 0)
+
+        // HOVERS
+        const tooltip = d3.select("#bar-tooltip");
+
+
+        function highlightBar(event, d) {
+
+            bar = uniqueShips.filter(data => data.year === d.year)
+                 .attr("stroke-opacity", 1)
+
+
+            uniqueFandoms.filter(data => data.year === d.year)
+                .attr("stroke-opacity", 1)
+
+            tooltip.transition()
+                .duration(100)
+                .style("visibility", "visible")
+                .style("opacity", 1);
+ 
+            tooltip.html(`
+            <strong># Unqiue Ships:</strong> ${d.uniqueShips}
+            <br><strong># Unqiue Fandoms: </strong>${d.uniqueFandoms}`)
+                .style("left", (bar.attr('x')) + "px")
+                // .style("top",  + "px");
+            
+
+        }
+        function undoHighlightBar(event, d) {
+
+            uniqueShips.filter(data => data.year === d.year)
+            .attr("stroke-opacity", 0)
+
+            uniqueFandoms.filter(data => data.year === d.year)
+            .attr("stroke-opacity", 0)
+               
+            tooltip.transition()
+            .duration(100)
+            .style("visibility", "hidden")
+            .style("opacity", 0);
+
+        }   
+
+        uniqueShips.on("mouseover", function (event, d) {
+          highlightBar(event, d)
+        }).on("mouseout", function(event, d) {
+            undoHighlightBar(event,d)
+        })
+
+        uniqueFandoms.on("mouseover", function (event, d) {
+          highlightBar(event, d)
+        }).on("mouseout", function(event, d) {
+            undoHighlightBar(event,d)
+        })
+
+        }
+
+        requestBarChartData();
 
 
     // ---------------- GENDER IDENTITY GRAPHS---------------- //

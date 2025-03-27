@@ -620,7 +620,7 @@
       </div>
 
       <div class="tab" id="tab4">
-        gender identity
+        ao3 author's gender identity
       </div>
     </div>
 
@@ -683,6 +683,13 @@
 
         <!-- ******************* GENDER IDENTITY ******************* -->
         <div id="gender-identity-container" class="gender-identity-container">
+          <div class="fan-descr">
+            <p> With all these fanfictions and ships, we want to see the writers and authors behind them!
+              Click the tab to see the proportion of authors that identify as a member of the LGBTQ+ community 
+              or explore the proportion of authors that identify as a member of the transgender community. 
+              Hover over each pie slice to see exact percentages!
+            </p>
+          </div>
           <button id = "gender" onclick="updateData888(lgbtq_data888, 'Do you identify as LGBTQ+ in any form?')">
             Do you identify as LGBTQ+ in any form?
           </button>
@@ -700,6 +707,7 @@
             <p>Here is a visualization of the top 20 most popular ships on Ao3, colored by fandom.
               Click on each circle to view more information about the pairing!
             </p>
+            <p>Interestingly, on this list, there is only 1 straight ship (Adrien/Marinette) and 1 platonic relationship (Peter Parker & Tony Stark).</p>
           </div>
           <div class="slash-filters">
             <label for="genre-select">Sort by Genre:</label>
@@ -1158,8 +1166,9 @@
         .on("mouseover", function (event, d) {
           tooltip888.transition().duration(200).style("opacity", 1);
           tooltip888.html(d.data.response + ": " + d.data.value + "%")
-            .style("left", (event.pageX + 5) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("left", (event.pageX) + "px")
+            .style("top", (event.pageY - 98) + "px");
+
 
           d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
         })

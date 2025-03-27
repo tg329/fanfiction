@@ -295,6 +295,19 @@
 
 
     /******* BUILD YOUR OWN SHIP CSS ********/
+    #left-tooltip {
+      padding: 5px;
+      width: 200px;
+      margin-left: -12%
+    }
+    #right-tooltip {
+      padding: 5px;
+      width: 200px;
+      margin-right: -14%
+    }
+
+
+
     .ship-container {
       display: flex;
       justify-content: center;
@@ -460,6 +473,7 @@
       animation-duration: 1s;
       animation-direction: alternate;
       animation-iteration-count: infinite;
+      /* font-size: 150px; */
 
       text-anchor: middle;
       fill: #AA0033
@@ -520,6 +534,17 @@
     height: 100%;
     }
 
+    #title888_left {
+      text-align: center;
+      margin-left: 20%;
+    }
+
+    #title888_right {
+      text-align: center;
+      margin-left: 20%;
+      margin-top: 4em;
+    }
+
 
     path.slice888 {
         stroke-width: 1px;
@@ -543,9 +568,11 @@
         opacity: 0;
     }
 
+
+
     .chart-container {
         width: 45%;
-        margin-right: 5%;
+        margin-right: 18%;
         text-align: center;
     }
 
@@ -574,8 +601,16 @@
 
     #chart-wrapper {
         display: flex;
+        gap: 15px;
+        justify-content:center;
+        align-items: center;
         flex-direction: column;
     }
+
+    #title888_right{
+      text-align: center;
+    }
+
   
 
     /******* SLASH CSS********/
@@ -1342,8 +1377,8 @@
 
 
     // ---------------- GENDER IDENTITY GRAPHS---------------- //
-    var width888 = 960;
-  var height888 = 500;
+    var width888 = 816; //960
+  var height888 = 425; //500
   var radius888 = Math.min(width888, height888) / 2;
 
   var color888 = d3.scaleOrdinal()
@@ -1395,7 +1430,9 @@
       var u888 = svg888.selectAll('path.slice888')
           .data(data_ready888);
 
-      u888.enter()
+
+      if (data888 == lgbtq_data888){
+        u888.enter()
           .append('path')
           .merge(u888)
           .attr('d', arc888)
@@ -1407,7 +1444,7 @@
               tooltip888.transition().duration(200).style("opacity", 1);
               tooltip888.html(d.data.response + ": " + d.data.value + "%")
                   .style("left", (event.pageX + 5) + "px")
-                  .style("top", (event.pageY - 28) + "px");
+                  .style("top", (event.pageY-200) + "px");
 
               d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
           })
@@ -1415,6 +1452,29 @@
               tooltip888.transition().duration(200).style("opacity", 0);
               d3.select(this).transition().duration(300).attr("transform", "scale(1)");
           });
+
+      }else{
+        u888.enter()
+          .append('path')
+          .merge(u888)
+          .attr('d', arc888)
+          .attr('fill', function (d) { return color888(d.data.response); })
+          .attr("stroke", "white")
+          .style("stroke-width", "2px")
+          .style("opacity", 1)
+          .on("mouseover", function (event, d) {
+              tooltip888.transition().duration(200).style("opacity", 1);
+              tooltip888.html(d.data.response + ": " + d.data.value + "%")
+                  .style("left", (event.pageX + 5) + "px")
+                  .style("top", (event.pageY + 300) + "px");
+
+              d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
+          })
+          .on("mouseout", function (d) {
+              tooltip888.transition().duration(200).style("opacity", 0);
+              d3.select(this).transition().duration(300).attr("transform", "scale(1)");
+          });
+      }
 
       // Add polylines and labels
       svg888.selectAll('allPolylines')

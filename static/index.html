@@ -313,6 +313,7 @@
       justify-content: center;
       align-items: center;
       margin-top: 50px;
+      /* background: rgb(195, 195, 195); */
     }
 
     .button-container {
@@ -490,6 +491,37 @@
 
     }
 
+    /******* BAR CHART CSS ***************/
+
+    .gridlines .domain {
+        display: none;
+        }
+        
+    .gridlines line {
+        stroke: #9a9a9a;
+    }
+
+    .bar-tooltip {
+        pointer-events: none;
+        visibility: hidden;
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        /* direction: rtl;
+        text-align: right; */
+        /* offset-anchor: end; */
+        /* lazy way to make sure tooltip is always on top */
+        z-index: 9999;
+
+    }
+
+    .bar-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      /* background: rgb(195, 195, 195); */
+    }
+
 
     /******* GENDER IDENTITY CSS ********/
     .circle_svg888 {
@@ -551,7 +583,7 @@
 
     #chart-wrapper {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
     }
   
 
@@ -711,7 +743,18 @@
               Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
               communities and
               inspiring new generations of writers. </p>
+
+              <div class = "bar-container">
+                <svg id="barchart" height="300" width="1000" style="background: rgb(195, 195, 195);"> </svg>
+                <div id="bar-tooltip" class="bar-tooltip"></div>
+    
+              </div>
           </div>
+
+          
+
+  
+
         </div>
       
 
@@ -1141,8 +1184,8 @@
 
 
     // ---------------- GENDER IDENTITY GRAPHS---------------- //
-    var width888 = 960;
-  var height888 = 500;
+    var width888 = 672; //960
+  var height888 = 350; //500
   var radius888 = Math.min(width888, height888) / 2;
 
   var color888 = d3.scaleOrdinal()
@@ -1206,7 +1249,7 @@
               tooltip888.transition().duration(200).style("opacity", 1);
               tooltip888.html(d.data.response + ": " + d.data.value + "%")
                   .style("left", (event.pageX + 5) + "px")
-                  .style("top", (event.pageY - 28) + "px");
+                  .style("top", (event.pageY - 78) + "px");
 
               d3.select(this).transition().duration(300).attr("transform", "scale(1.1)");
           })

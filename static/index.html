@@ -34,6 +34,8 @@
     }
 
     .display-box {
+      margin-left: 25px;
+      margin-right: 25px;
       margin-top: 0px;
       display: flex;
       flex-direction: column;
@@ -89,7 +91,7 @@
     .content-container {
       border-radius: 6px;
       background-color: #efefef;
-      height: 40em;
+      height: 44em;
       width: 100%;
       overflow-y: scroll;
       position: relative;
@@ -298,6 +300,7 @@
       justify-content: center;
       align-items: center;
       margin-top: 50px;
+      /* background: rgb(195, 195, 195); */
     }
 
     .button-container {
@@ -472,6 +475,37 @@
       opacity: 1;
       top: 200px;
 
+    }
+
+    /******* BAR CHART CSS ***************/
+
+    .gridlines .domain {
+        display: none;
+        }
+        
+    .gridlines line {
+        stroke: #9a9a9a;
+    }
+
+    .bar-tooltip {
+        pointer-events: none;
+        visibility: hidden;
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        /* direction: rtl;
+        text-align: right; */
+        /* offset-anchor: end; */
+        /* lazy way to make sure tooltip is always on top */
+        z-index: 9999;
+
+    }
+
+    .bar-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      /* background: rgb(195, 195, 195); */
     }
 
 
@@ -695,7 +729,18 @@
               Once seen as a niche hobby, fanfiction has recently exploded into mainstream culture, shaping online
               communities and
               inspiring new generations of writers. </p>
+
+              <div class = "bar-container">
+                <svg id="barchart" height="300" width="1000" style="background: rgb(195, 195, 195);"> </svg>
+                <div id="bar-tooltip" class="bar-tooltip"></div>
+    
+              </div>
           </div>
+
+          
+
+  
+
         </div>
       
 
